@@ -309,7 +309,7 @@ function App() {
             <div className="location-card__copy">
               <span className="location-dot" />
               <h3>Katër Burgers</h3>
-              <p>Rruga 21 Dhjetori — beside Ushqimore Zuna, Tiranë</p>
+              <p>Rruga e Kavajës, Kryqëzimi 21 Dhjetori — beside Ushqimore Zuna, Tiranë 1001</p>
               <dl>
                 <div><dt>Open</dt><dd>Sun – Thu · 12:00 – 01:00<br />Fri – Sat · 12:00 – 03:00</dd></div>
                 <div><dt>Service</dt><dd>Dine in & takeaway</dd></div>

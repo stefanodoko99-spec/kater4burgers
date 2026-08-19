@@ -51,7 +51,29 @@
         "telephone": "+355693422433",
         "priceRange": "500-1000 ALL",
         "currenciesAccepted": "ALL",
-        "sameAs": ["https://www.instagram.com/katerburgers/"],
+        "sameAs": [
+          "https://www.instagram.com/katerburgers/",
+          "https://wolt.com/en/alb/tirana/restaurant/kater-burgers"
+        ],
+        "acceptsReservations": false,
+        "potentialAction": {
+          "@type": "OrderAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://wolt.com/en/alb/tirana/restaurant/kater-burgers",
+            "inLanguage": ["sq", "en"],
+            "actionPlatform": [
+              "https://schema.org/DesktopWebPlatform",
+              "https://schema.org/IOSPlatform",
+              "https://schema.org/AndroidPlatform"
+            ]
+          },
+          "deliveryMethod": "https://schema.org/OnSitePickup",
+          "priceSpecification": {
+            "@type": "DeliveryChargeSpecification",
+            "priceCurrency": "ALL"
+          }
+        },
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Rruga e Kavajës, Kryqëzimi 21 Dhjetori",
@@ -90,25 +112,49 @@
                 "@type": "MenuItem",
                 "name": "Bloom",
                 "description": "Tomato and lettuce bring the crunch; cheddar and smashed beef bring the weight.",
-                "image": "%SITE_URL%/images/bloom.jpg"
+                "image": "%SITE_URL%/images/bloom.jpg",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "700",
+                  "priceCurrency": "ALL",
+                  "availability": "https://schema.org/InStock"
+                }
               },
               {
                 "@type": "MenuItem",
                 "name": "Jalapeños",
                 "description": "Jalapeños cut through herb cream sauce, American cheese and smashed beef.",
-                "image": "%SITE_URL%/images/jalapenos.jpg"
+                "image": "%SITE_URL%/images/jalapenos.jpg",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "700",
+                  "priceCurrency": "ALL",
+                  "availability": "https://schema.org/InStock"
+                }
               },
               {
                 "@type": "MenuItem",
                 "name": "Oklahoma",
                 "description": "Caramelized onions, cheddar and smashed beef in a stripped-back build.",
-                "image": "%SITE_URL%/images/oklahoma.jpg"
+                "image": "%SITE_URL%/images/oklahoma.jpg",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "700",
+                  "priceCurrency": "ALL",
+                  "availability": "https://schema.org/InStock"
+                }
               },
               {
                 "@type": "MenuItem",
                 "name": "Classic",
                 "description": "Pickles, American cheddar, smashed beef and house sauce. Direct and balanced.",
-                "image": "%SITE_URL%/images/classic.jpg"
+                "image": "%SITE_URL%/images/classic.jpg",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "700",
+                  "priceCurrency": "ALL",
+                  "availability": "https://schema.org/InStock"
+                }
               }
             ]
           }

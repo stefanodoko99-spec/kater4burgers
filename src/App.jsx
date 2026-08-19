@@ -10,6 +10,11 @@ gsap.registerPlugin(ScrollTrigger, useGSAP)
 // dialled in E.164 so the link works from abroad and from saved contacts.
 const PHONE_DISPLAY = '069 342 2433'
 const PHONE_E164 = '+355693422433'
+const WOLT_URL = 'https://wolt.com/en/alb/tirana/restaurant/kater-burgers'
+
+// Every burger is the same price single; the double adds 200.
+const PRICE_SINGLE = 700
+const PRICE_DOUBLE = 900
 
 const burgers = [
   {
@@ -192,7 +197,7 @@ function App() {
           <a href="#why-four">Why four</a>
           <a href="#visit">Tirana</a>
         </nav>
-        <a className="pill pill--blue header__cta" href="#menu">Pick your burger</a>
+        <a className="pill pill--blue header__cta" href={WOLT_URL} target="_blank" rel="noreferrer">Order on Wolt</a>
         <button
           className="menu-toggle"
           type="button"
@@ -208,7 +213,8 @@ function App() {
         <a href="#menu" onClick={closeMenu}>Four burgers</a>
         <a href="#why-four" onClick={closeMenu}>Why four</a>
         <a href="#visit" onClick={closeMenu}>Tirana</a>
-        <a className="pill pill--blue mobile-menu__cta" href={`tel:${PHONE_E164}`} onClick={closeMenu}>Call to order</a>
+        <a className="pill pill--blue mobile-menu__cta" href={WOLT_URL} target="_blank" rel="noreferrer" onClick={closeMenu}>Order on Wolt</a>
+        <a className="pill mobile-menu__cta" href={`tel:${PHONE_E164}`} onClick={closeMenu}>Call {PHONE_DISPLAY}</a>
       </div>
 
       <main>
@@ -272,7 +278,13 @@ function App() {
                 </div>
                 <div className="burger-card__body">
                   <p className="burger-card__headline">{burger.headline}</p>
-                  <h3>{burger.name}</h3>
+                  <div className="burger-card__title-row">
+                    <h3>{burger.name}</h3>
+                    <p className="burger-card__price">
+                      <strong>{PRICE_SINGLE} L</strong>
+                      <span>double {PRICE_DOUBLE} L</span>
+                    </p>
+                  </div>
                   <p>{burger.copy}</p>
                   <ul aria-label={`${burger.name} ingredients`}>
                     {burger.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}
@@ -315,7 +327,8 @@ function App() {
                 <div><dt>Service</dt><dd>Dine in & takeaway</dd></div>
               </dl>
               <div className="location-card__actions">
-                <a className="pill pill--blue" href={`tel:${PHONE_E164}`}>Call to order · {PHONE_DISPLAY}</a>
+                <a className="pill pill--blue" href={WOLT_URL} target="_blank" rel="noreferrer">Order on Wolt <ArrowIcon /></a>
+                <a className="pill" href={`tel:${PHONE_E164}`}>Call · {PHONE_DISPLAY}</a>
                 <a className="pill" href="https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
               </div>
             </div>
@@ -331,8 +344,8 @@ function App() {
           <p className="eyebrow">You know the four</p>
           <h2>Which one<br /><strong>are you ordering?</strong></h2>
           <div className="closing-cta__actions">
-            <a className="pill pill--cream" href={`tel:${PHONE_E164}`}>Call to order <ArrowIcon /></a>
-            <a className="text-link text-link--light" href="#menu">Compare the four</a>
+            <a className="pill pill--cream" href={WOLT_URL} target="_blank" rel="noreferrer">Order on Wolt <ArrowIcon /></a>
+            <a className="text-link text-link--light" href={`tel:${PHONE_E164}`}>Or call {PHONE_DISPLAY}</a>
           </div>
         </section>
       </main>

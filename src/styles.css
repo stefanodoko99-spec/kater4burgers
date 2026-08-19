@@ -408,3 +408,22 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .location-card__actions { flex-direction: column; align-items: stretch; }
   .location-card__actions .pill { width: 100%; }
 }
+
+/* Price sits on the same baseline as the burger name, right-aligned, so the
+   four cards read as a price list when scanned down the grid. */
+.burger-card__title-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+}
+.burger-card__price { margin: 0; display: grid; justify-items: end; text-align: right; }
+.burger-card__price strong {
+  display: block; color: var(--blue); font-size: clamp(19px, 2vw, 24px); font-weight: 900;
+  letter-spacing: -.02em; white-space: nowrap;
+}
+.burger-card__price span {
+  display: block; margin-top: 2px; font-size: 11px; font-weight: 700; white-space: nowrap; opacity: .62;
+}
+
+@media (max-width: 420px) {
+  .burger-card__title-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .burger-card__price { justify-items: start; text-align: left; }
+}

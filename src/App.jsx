@@ -6,6 +6,11 @@ import FourBurgerStage from './components/FourBurgerStage.jsx'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
+// Katër Burgers, Tirana. Displayed in the national format locals recognise,
+// dialled in E.164 so the link works from abroad and from saved contacts.
+const PHONE_DISPLAY = '069 342 2433'
+const PHONE_E164 = '+355693422433'
+
 const burgers = [
   {
     number: '01',
@@ -203,7 +208,7 @@ function App() {
         <a href="#menu" onClick={closeMenu}>Four burgers</a>
         <a href="#why-four" onClick={closeMenu}>Why four</a>
         <a href="#visit" onClick={closeMenu}>Tirana</a>
-        <a className="pill pill--blue mobile-menu__cta" href="#menu" onClick={closeMenu}>Pick your burger</a>
+        <a className="pill pill--blue mobile-menu__cta" href={`tel:${PHONE_E164}`} onClick={closeMenu}>Call to order</a>
       </div>
 
       <main>
@@ -309,7 +314,10 @@ function App() {
                 <div><dt>Open</dt><dd>Sun – Thu · 12:00 – 01:00<br />Fri – Sat · 12:00 – 03:00</dd></div>
                 <div><dt>Service</dt><dd>Dine in & takeaway</dd></div>
               </dl>
-              <a className="pill pill--blue" href="https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
+              <div className="location-card__actions">
+                <a className="pill pill--blue" href={`tel:${PHONE_E164}`}>Call to order · {PHONE_DISPLAY}</a>
+                <a className="pill" href="https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
+              </div>
             </div>
             <div className="location-card__graphic" aria-hidden="true">
               <span className="location-card__four">4</span>
@@ -323,8 +331,8 @@ function App() {
           <p className="eyebrow">You know the four</p>
           <h2>Which one<br /><strong>are you ordering?</strong></h2>
           <div className="closing-cta__actions">
-            <a className="pill pill--cream" href="#menu">Compare the four <ArrowIcon /></a>
-            <a className="text-link text-link--light" href="#visit">Find Katër</a>
+            <a className="pill pill--cream" href={`tel:${PHONE_E164}`}>Call to order <ArrowIcon /></a>
+            <a className="text-link text-link--light" href="#menu">Compare the four</a>
           </div>
         </section>
       </main>

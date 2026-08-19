@@ -398,3 +398,13 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .header { grid-template-columns: 1fr auto; }
   .header__cta { display: none; }
 }
+
+/* Calling is the conversion here, so the two location actions sit side by side
+   and wrap rather than shrink — the phone number must never truncate. */
+.location-card__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.location-card__actions .pill { white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .location-card__actions { flex-direction: column; align-items: stretch; }
+  .location-card__actions .pill { width: 100%; }
+}

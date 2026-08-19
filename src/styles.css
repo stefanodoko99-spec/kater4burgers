@@ -148,7 +148,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 }
 .hero-ingredient-list li, .burger-card li {
   padding: 7px 10px; border: 1.5px solid var(--ink); border-radius: 999px; background: rgba(255, 255, 255, .78);
-  font-size: 9px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase;
+  font-size: 11px; font-weight: 850; letter-spacing: .05em; text-transform: uppercase;
 }
 .story-index {
   position: absolute; z-index: 8; top: 128px; right: var(--pad); display: flex; gap: clamp(12px, 2vw, 30px);
@@ -290,9 +290,10 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 
 @media (max-width: 760px) {
   :root { --header-h: 72px; }
-  .header { top: 28px; grid-template-columns: 1fr auto; }
-  .desktop-nav, .header__cta { display: none; }
-  .brand { width: 195px; }
+  .header { top: 28px; grid-template-columns: 1fr auto auto; column-gap: 10px; }
+  .desktop-nav { display: none; }
+  .header__cta { min-height: 44px; padding: 0 15px; font-size: 11px; box-shadow: 3px 3px 0 var(--ink); }
+  .brand { width: min(168px, 38vw); }
   .menu-toggle { width: 48px; height: 48px; display: grid; place-content: center; gap: 7px; border: 0; border-radius: 50%; background: var(--blue); cursor: pointer; }
   .menu-toggle span { width: 21px; height: 2px; background: white; transition: transform 220ms ease; }
   .menu-is-open .menu-toggle span:first-child { transform: translateY(4.5px) rotate(45deg); }
@@ -311,7 +312,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .story-copy__title strong { max-width: 310px; margin-top: 9px; font-size: clamp(23px, 6.8vw, 34px); }
   .story-note { max-width: 92%; margin-top: 13px; font-size: 14px; line-height: 1.4; }
   .hero-ingredient-list { max-width: 95%; margin-top: 11px; gap: 5px; }
-  .hero-ingredient-list li { padding: 5px 8px; font-size: 8px; }
+  .hero-ingredient-list li { padding: 6px 10px; font-size: 11px; }
   .story-index { top: 114px; right: var(--pad); left: var(--pad); justify-content: space-between; gap: 8px; }
   .story-index__item { font-size: 0; }
   .story-index__item span { font-size: 10px; }
@@ -337,7 +338,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .story-copy__title strong { font-size: clamp(21px, 6.3vw, 30px); }
   .story-note { margin-top: 10px; font-size: 13px; }
   .hero-ingredient-list { max-width: 100%; margin-top: 9px; }
-  .hero-ingredient-list li { padding: 4px 7px; font-size: 7.5px; }
+  .hero-ingredient-list li { padding: 6px 9px; font-size: 11px; }
   .story-index { top: 111px; right: 18px; left: 18px; }
   .section-pad { padding-block: 80px; }
   .section-heading { margin-bottom: 46px; }
@@ -368,7 +369,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .story-copy__title strong { margin-top: 6px; font-size: clamp(17px, 3vw, 25px); }
   .story-note { margin-top: 7px; font-size: 11px; line-height: 1.25; }
   .hero-ingredient-list { margin-top: 6px; }
-  .hero-ingredient-list li { padding: 3px 6px; font-size: 7px; }
+  .hero-ingredient-list li { padding: 5px 9px; font-size: 11px; }
   .story-index, .scroll-cue { display: none; }
 }
 
@@ -377,7 +378,23 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
   .scroll-story { height: 100svh; min-height: 700px; }
   .story-stage { position: relative; }
-  .story-copy:not(:last-child) { display: none; }
-  .story-copy:last-child { visibility: visible !important; opacity: 1 !important; }
+  .story-copy:not(:first-child) { display: none; }
+  .story-copy:first-child { visibility: visible !important; opacity: 1 !important; }
   .story-progress, .story-index, .scroll-cue { display: none; }
+}
+
+/* The order CTA must survive on small screens. Down to 420px it stays in the
+   header next to the toggle; below that the header can only hold the logo and
+   the toggle, so the CTA moves into the menu panel rather than vanishing. */
+.mobile-menu .mobile-menu__cta {
+  align-self: start; margin-top: 10px; font-size: 13px; font-weight: 850; letter-spacing: 0;
+}
+
+@media (min-width: 761px) {
+  .mobile-menu__cta { display: none; }
+}
+
+@media (max-width: 419px) {
+  .header { grid-template-columns: 1fr auto; }
+  .header__cta { display: none; }
 }

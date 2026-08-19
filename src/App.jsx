@@ -146,9 +146,9 @@ function App() {
       })
 
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        progress.current.value = 0.875
+        progress.current.value = 0.125
         gsap.set('.story-copy', { autoAlpha: 0 })
-        gsap.set('.story-copy:last-of-type', { autoAlpha: 1, y: 0 })
+        gsap.set('.story-copy:first-of-type', { autoAlpha: 1, y: 0 })
       })
 
       return () => mm.revert()
@@ -203,6 +203,7 @@ function App() {
         <a href="#menu" onClick={closeMenu}>Four burgers</a>
         <a href="#why-four" onClick={closeMenu}>Why four</a>
         <a href="#visit" onClick={closeMenu}>Tirana</a>
+        <a className="pill pill--blue mobile-menu__cta" href="#menu" onClick={closeMenu}>Pick your burger</a>
       </div>
 
       <main>

@@ -4,11 +4,112 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#244ac8" />
-    <meta name="description" content="Katër Burgers — four smash burgers, made fresh in Tirana." />
+
+    <title>Katër Burgers — Four Burgers. One Address.</title>
+    <meta name="description" content="Katër Burgers — four smash burgers, made fresh in Tirana. Bloom, Jalapeños, Oklahoma and Classic, smashed to order on Rruga 21 Dhjetori." />
+    <link rel="canonical" href="https://kater4burgers.vercel.app/" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:site_name" content="Katër Burgers" />
+    <meta property="og:title" content="Katër Burgers — Four Burgers. One Address." />
+    <meta property="og:description" content="Four smash burgers, made fresh in Tirana. Bloom, Jalapeños, Oklahoma and Classic, smashed to order on Rruga 21 Dhjetori." />
+    <meta property="og:url" content="https://kater4burgers.vercel.app/" />
+    <meta property="og:image" content="https://kater4burgers.vercel.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A Katër Burgers smash burger with cheddar, tomato and lettuce" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Katër Burgers — Four Burgers. One Address." />
+    <meta name="twitter:description" content="Four smash burgers, made fresh in Tirana. Smashed to order on Rruga 21 Dhjetori." />
+    <meta name="twitter:image" content="https://kater4burgers.vercel.app/og-image.jpg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-    <title>Katër Burgers — Four Burgers. One Address.</title>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "@id": "https://kater4burgers.vercel.app/#restaurant",
+        "name": "Katër Burgers",
+        "url": "https://kater4burgers.vercel.app/",
+        "image": [
+          "https://kater4burgers.vercel.app/og-image.jpg",
+          "https://kater4burgers.vercel.app/images/bloom.jpg",
+          "https://kater4burgers.vercel.app/images/jalapenos.jpg",
+          "https://kater4burgers.vercel.app/images/oklahoma.jpg",
+          "https://kater4burgers.vercel.app/images/classic.jpg"
+        ],
+        "description": "Four smash burgers, made fresh in Tirana. Bloom, Jalapeños, Oklahoma and Classic, smashed to order.",
+        "servesCuisine": ["Burgers", "American"],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rruga 21 Dhjetori (beside Ushqimore Zuna)",
+          "addressLocality": "Tiranë",
+          "addressCountry": "AL"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 41.3259692,
+          "longitude": 19.8038652
+        },
+        "hasMap": "https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+            "opens": "12:00",
+            "closes": "01:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Friday", "Saturday"],
+            "opens": "12:00",
+            "closes": "03:00"
+          }
+        ],
+        "hasMenu": {
+          "@type": "Menu",
+          "name": "The four burgers",
+          "hasMenuSection": {
+            "@type": "MenuSection",
+            "name": "Burgers",
+            "hasMenuItem": [
+              {
+                "@type": "MenuItem",
+                "name": "Bloom",
+                "description": "Tomato and lettuce bring the crunch; cheddar and smashed beef bring the weight.",
+                "image": "https://kater4burgers.vercel.app/images/bloom.jpg"
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Jalapeños",
+                "description": "Jalapeños cut through herb cream sauce, American cheese and smashed beef.",
+                "image": "https://kater4burgers.vercel.app/images/jalapenos.jpg"
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Oklahoma",
+                "description": "Caramelized onions, cheddar and smashed beef in a stripped-back build.",
+                "image": "https://kater4burgers.vercel.app/images/oklahoma.jpg"
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Classic",
+                "description": "Pickles, American cheddar, smashed beef and house sauce. Direct and balanced.",
+                "image": "https://kater4burgers.vercel.app/images/classic.jpg"
+              }
+            ]
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Katër Burgers">
+  <rect width="64" height="64" rx="14" fill="#244ac8"/>
+  <path d="M38 13 L12 42 H54" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="miter"/>
+  <path d="M38 13 V55" fill="none" stroke="#ffffff" stroke-width="10"/>
+</svg>

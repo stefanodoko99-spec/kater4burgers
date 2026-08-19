@@ -4,47 +4,47 @@ const STACKS = {
   bloom: {
     folder: 'bloom',
     layers: [
-      ['bloom-01-top-bun.png', 1],
-      ['bloom-02-tomato.png', 34],
-      ['bloom-03-american-cheddar.png', 41],
-      ['bloom-04-smash-beef.png', 46],
-      ['bloom-05-lettuce.png', 52],
-      ['bloom-06-bottom-bun.png', 56],
+      ['bloom-01-top-bun.webp', 1],
+      ['bloom-02-tomato.webp', 34],
+      ['bloom-03-american-cheddar.webp', 41],
+      ['bloom-04-smash-beef.webp', 46],
+      ['bloom-05-lettuce.webp', 52],
+      ['bloom-06-bottom-bun.webp', 56],
     ],
     spread: [-0.24, -0.13, -0.035, 0.105, 0.21, 0.33],
   },
   jalapenos: {
     folder: 'jalapenos',
     layers: [
-      ['jalapenos-01-top-bun.png', 0],
-      ['jalapenos-02-jalapenos.png', 34],
-      ['jalapenos-03-herb-cream-sauce.png', 41],
-      ['jalapenos-04-american-cheese.png', 43],
-      ['jalapenos-05-smash-beef.png', 50],
-      ['jalapenos-06-bottom-bun.png', 57],
+      ['jalapenos-01-top-bun.webp', 0],
+      ['jalapenos-02-jalapenos.webp', 34],
+      ['jalapenos-03-herb-cream-sauce.webp', 41],
+      ['jalapenos-04-american-cheese.webp', 43],
+      ['jalapenos-05-smash-beef.webp', 50],
+      ['jalapenos-06-bottom-bun.webp', 57],
     ],
     spread: [-0.24, -0.14, -0.045, 0.045, 0.18, 0.32],
   },
   oklahoma: {
     folder: 'oklahoma',
     layers: [
-      ['oklahoma-01-top-bun.png', 0],
-      ['oklahoma-02-american-cheddar.png', 40],
-      ['oklahoma-03-smash-beef.png', 48],
-      ['oklahoma-04-caramelized-onions.png', 55],
-      ['oklahoma-05-bottom-bun.png', 58],
+      ['oklahoma-01-top-bun.webp', 0],
+      ['oklahoma-02-american-cheddar.webp', 40],
+      ['oklahoma-03-smash-beef.webp', 48],
+      ['oklahoma-04-caramelized-onions.webp', 55],
+      ['oklahoma-05-bottom-bun.webp', 58],
     ],
     spread: [-0.23, -0.09, 0.07, 0.2, 0.33],
   },
   classic: {
     folder: 'classic-generated/final',
     layers: [
-      ['classic-ai-01-top-bun.png', -7],
-      ['classic-ai-02-pickles.png', 31],
-      ['classic-ai-03-cheddar.png', 34],
-      ['classic-ai-04-smash-beef.png', 43],
-      ['classic-ai-05-house-sauce.png', 47],
-      ['classic-ai-06-bottom-bun.png', 50],
+      ['classic-ai-01-top-bun.webp', -7],
+      ['classic-ai-02-pickles.webp', 31],
+      ['classic-ai-03-cheddar.webp', 34],
+      ['classic-ai-04-smash-beef.webp', 43],
+      ['classic-ai-05-house-sauce.webp', 47],
+      ['classic-ai-06-bottom-bun.webp', 50],
     ],
     spread: [-0.23, -0.14, -0.04, 0.13, 0.245, 0.375],
   },
@@ -62,7 +62,7 @@ export default function FourBurgerStage({ burgers, progress, reduceMotion }) {
     let frameId
 
     const render = () => {
-      const p = reduceMotion ? 0.875 : progress.current.value
+      const p = reduceMotion ? 0.125 : progress.current.value
       const isMobile = window.innerWidth <= 760
       const segment = 1 / burgers.length
       const separationUnit = Math.min(

@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://kater4burgers.vercel.app/sitemap.xml

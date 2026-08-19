@@ -2,59 +2,51 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import RealBurgerStack from './components/RealBurgerStack.jsx'
+import FourBurgerStage from './components/FourBurgerStage.jsx'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 const burgers = [
   {
     number: '01',
-    season: 'Spring',
     name: 'Bloom',
-    copy: 'Green, bright and juicy — the first bite of the year.',
-    ingredients: ['Brioche bun', 'Tomato', 'American cheddar', 'Smash beef', 'Lettuce'],
-    image: '/images/bloom.jpg',
-    tone: 'green',
     model: 'bloom',
+    accent: '#b9e58c',
+    image: '/images/bloom.jpg',
+    headline: 'Fresh crunch. Hard sear.',
+    copy: 'Tomato and lettuce bring the crunch; cheddar and smashed beef bring the weight.',
+    ingredients: ['Brioche bun', 'Tomato', 'American cheddar', 'Smash beef', 'Lettuce'],
   },
   {
     number: '02',
-    season: 'Summer',
     name: 'Jalapeños',
-    copy: 'Heat, herbs and cream — summer with a proper kick.',
-    ingredients: ['Brioche bun', 'Jalapeños', 'Herb cream sauce', 'American cheese', 'Smash beef'],
-    image: '/images/jalapenos.jpg',
-    tone: 'yellow',
     model: 'jalapenos',
+    accent: '#f3df65',
+    image: '/images/jalapenos.jpg',
+    headline: 'Creamy heat. Clean finish.',
+    copy: 'Jalapeños cut through herb cream sauce, American cheese and smashed beef.',
+    ingredients: ['Brioche bun', 'Jalapeños', 'Herb cream sauce', 'American cheese', 'Smash beef'],
   },
   {
     number: '03',
-    season: 'Autumn',
     name: 'Oklahoma',
-    copy: 'Onions smashed straight into the patty — deep and sweet.',
-    ingredients: ['Brioche bun', 'American cheddar', 'Smash beef', 'Caramelized onions'],
-    image: '/images/oklahoma.jpg',
-    tone: 'orange',
     model: 'oklahoma',
+    accent: '#f3b57a',
+    image: '/images/oklahoma.jpg',
+    headline: 'Sweet onions. Crispy edges.',
+    copy: 'Caramelized onions, cheddar and smashed beef in a stripped-back build.',
+    ingredients: ['Brioche bun', 'American cheddar', 'Smash beef', 'Caramelized onions'],
   },
   {
     number: '04',
-    season: 'Winter',
     name: 'Classic',
-    copy: 'Beef, cheddar, pickles, house sauce. Nothing else needed.',
-    ingredients: ['Brioche bun', 'Pickles', 'American cheddar', 'Smash beef', 'House sauce'],
-    image: '/images/classic.jpg',
-    tone: 'blue',
     model: 'classic',
+    accent: '#9db8ff',
+    image: '/images/classic.jpg',
+    headline: 'Everything a smash needs.',
+    copy: 'Pickles, American cheddar, smashed beef and house sauce. Direct and balanced.',
+    ingredients: ['Brioche bun', 'Pickles', 'American cheddar', 'Smash beef', 'House sauce'],
   },
-]
-
-const chapters = [
-  { id: 'intro', eyebrow: 'Seasonal · Smash-grilled · Local', line1: 'One burger.', line2: 'Four seasons.', note: 'Scroll to expand it' },
-  { id: 'stack', eyebrow: '01 · Ground fresh daily', line1: 'Every layer', line2: 'earns its place.', note: 'Fresh. Never frozen.' },
-  { id: 'craft', eyebrow: '02 · Smash-grilled', line1: 'Fresh. Loud.', line2: 'Built to order.', note: 'Crispy edges. Juicy center.' },
-  { id: 'rebuild', eyebrow: '03 · Back together', line1: 'Every layer.', line2: 'Perfectly placed.', note: 'The full burger returns.' },
-  { id: 'finale', eyebrow: '04 · Ready to bite', line1: 'Whole again.', line2: 'Made for you.', note: '21 Dhjetori · Tirana', cta: true },
 ]
 
 function ArrowIcon() {
@@ -65,23 +57,12 @@ function ArrowIcon() {
   )
 }
 
-function StoryTitle({ chapter, index }) {
-  const Tag = index === 0 ? 'h1' : 'h2'
-  return (
-    <Tag className="story-copy__title">
-      <span>{chapter.line1}</span>
-      <em>{chapter.line2}</em>
-    </Tag>
-  )
-}
-
 function App() {
   const appRef = useRef(null)
   const storyRef = useRef(null)
   const progress = useRef({ value: 0 })
   const [menuOpen, setMenuOpen] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
-  const activeBurger = burgers[3]
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -94,6 +75,7 @@ function App() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia()
+
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         const storyTimeline = gsap.timeline({
           defaults: { ease: 'none' },
@@ -109,23 +91,53 @@ function App() {
         storyTimeline.to(progress.current, { value: 1, duration: 1 }, 0)
 
         const chapterEls = gsap.utils.toArray('.story-copy')
-        gsap.set(chapterEls, { autoAlpha: 0, y: 32 })
+        const indexEls = gsap.utils.toArray('.story-index__item')
+        gsap.set(chapterEls, { autoAlpha: 0, y: 28 })
         gsap.set(chapterEls[0], { autoAlpha: 1, y: 0 })
+        gsap.set(indexEls, { opacity: 0.34, x: 0 })
+        gsap.set(indexEls[0], { opacity: 1, x: -8 })
+
         chapterEls.forEach((chapter, index) => {
-          const start = index * 0.2
+          const start = index / burgers.length
+          const end = (index + 1) / burgers.length
           if (index > 0) {
-            storyTimeline.to(chapter, { autoAlpha: 1, y: 0, duration: 0.04, ease: 'power2.out' }, start - 0.005)
+            storyTimeline.to(chapter, { autoAlpha: 1, y: 0, duration: 0.035, ease: 'power2.out' }, start - 0.015)
+            storyTimeline.to(indexEls[index], { opacity: 1, x: -8, duration: 0.035 }, start - 0.015)
           }
-          storyTimeline.to(chapter, { autoAlpha: 1, duration: index === chapterEls.length - 1 ? 0.155 : 0.105 }, start + 0.035)
-          if (index !== chapterEls.length - 1) {
-            storyTimeline.to(chapter, { autoAlpha: 0, y: -24, duration: 0.04, ease: 'power2.in' }, start + 0.145)
+          if (index < chapterEls.length - 1) {
+            storyTimeline.to(chapter, { autoAlpha: 0, y: -22, duration: 0.035, ease: 'power2.in' }, end - 0.045)
+            storyTimeline.to(indexEls[index], { opacity: 0.34, x: 0, duration: 0.035 }, end - 0.045)
           }
         })
 
         gsap.to('.story-progress__fill', {
           scaleX: 1,
           ease: 'none',
-          scrollTrigger: { trigger: storyRef.current, start: 'top top', end: 'bottom bottom', scrub: true },
+          scrollTrigger: {
+            trigger: storyRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+          },
+        })
+
+        gsap.utils.toArray('.reveal').forEach((section) => {
+          gsap.from(section, {
+            y: 20,
+            autoAlpha: 0,
+            duration: 0.55,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: section, start: 'top 86%', once: true },
+          })
+        })
+
+        gsap.from('.burger-card', {
+          y: 30,
+          autoAlpha: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: '.burger-grid', start: 'top 82%', once: true },
         })
 
         return () => {
@@ -134,21 +146,9 @@ function App() {
       })
 
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        progress.current.value = 0.9
+        progress.current.value = 0.875
         gsap.set('.story-copy', { autoAlpha: 0 })
         gsap.set('.story-copy:last-of-type', { autoAlpha: 1, y: 0 })
-      })
-
-      const cards = gsap.utils.toArray('.burger-card')
-      cards.forEach((card, index) => {
-        gsap.from(card, {
-          y: 56,
-          autoAlpha: 0,
-          rotation: index % 2 ? 1.5 : -1.5,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: card, start: 'top 82%', once: true },
-        })
       })
 
       return () => mm.revert()
@@ -165,15 +165,16 @@ function App() {
 
   return (
     <div ref={appRef} className="site-shell">
-      <a className="skip-link" href="#story">Skip to the story</a>
+      <a className="skip-link" href="#story">Skip to the four burgers</a>
 
-      <div className="ticker" aria-label="Restaurant update">
+      <div className="ticker" aria-label="Katër Burgers highlights">
         <div className="ticker__track">
-          <span>Open daily 12pm — late</span><i />
-          <span>Ground fresh today</span><i />
-          <span>Now serving Jalapeños — the Summer drop</span><i />
-          <span aria-hidden="true">Open daily 12pm — late</span><i aria-hidden="true" />
-          <span aria-hidden="true">Ground fresh today</span><i aria-hidden="true" />
+          <span>Four burgers</span><i />
+          <span>Smashed to order</span><i />
+          <span>21 Dhjetori · Tirana</span><i />
+          <span>Four burgers</span><i aria-hidden="true" />
+          <span>Smashed to order</span><i aria-hidden="true" />
+          <span>21 Dhjetori · Tirana</span><i aria-hidden="true" />
         </div>
       </div>
 
@@ -182,11 +183,11 @@ function App() {
           <img src="/images/logo-kater.png" alt="Katër Burgers" width="1200" height="282" />
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#menu">The Four</a>
-          <a href="#story-section">Story</a>
-          <a href="#visit">Find us</a>
+          <a href="#menu">Four burgers</a>
+          <a href="#why-four">Why four</a>
+          <a href="#visit">Tirana</a>
         </nav>
-        <a className="pill pill--blue header__cta" href="#menu">See the menu</a>
+        <a className="pill pill--blue header__cta" href="#menu">Pick your burger</a>
         <button
           className="menu-toggle"
           type="button"
@@ -199,70 +200,72 @@ function App() {
       </header>
 
       <div className={`mobile-menu ${menuOpen ? 'is-open' : ''}`} aria-hidden={!menuOpen}>
-        <a href="#menu" onClick={closeMenu}>The Four</a>
-        <a href="#story-section" onClick={closeMenu}>Story</a>
-        <a href="#visit" onClick={closeMenu}>Find us</a>
+        <a href="#menu" onClick={closeMenu}>Four burgers</a>
+        <a href="#why-four" onClick={closeMenu}>Why four</a>
+        <a href="#visit" onClick={closeMenu}>Tirana</a>
       </div>
 
       <main>
-        <section id="story" ref={storyRef} className="scroll-story" aria-label="The burger story">
+        <section id="story" ref={storyRef} className="scroll-story" aria-label="Meet the four Katër burgers">
           <div className="story-stage">
             <div className="story-progress" aria-hidden="true"><span className="story-progress__fill" /></div>
-            <RealBurgerStack
-              progress={progress}
-              reduceMotion={reduceMotion}
-              variant={activeBurger.model}
-              name={activeBurger.name}
-            />
+
+            <FourBurgerStage burgers={burgers} progress={progress} reduceMotion={reduceMotion} />
+
             <div className="story-copy-wrap">
-              {chapters.map((chapter, index) => (
-                <article className={`story-copy story-copy--${chapter.id}`} key={chapter.id}>
-                  <p className="eyebrow">{index === 0 ? `${activeBurger.number} · ${activeBurger.season} signature` : chapter.eyebrow}</p>
-                  <StoryTitle
-                    chapter={index === 0 ? { ...chapter, line1: activeBurger.name, line2: 'layer by layer.' } : chapter}
-                    index={index}
-                  />
-                  <p className="story-note">{index === 0 ? activeBurger.copy : chapter.note}</p>
-                  {index === 0 && (
-                    <ul className="hero-ingredient-list" aria-label={`${activeBurger.name} ingredients`}>
-                      {activeBurger.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}
+              {burgers.map((burger, index) => {
+                const Tag = index === 0 ? 'h1' : 'h2'
+                return (
+                  <article className={`story-copy story-copy--${burger.model}`} key={burger.name}>
+                    <p className="eyebrow">Burger {burger.number} / 04</p>
+                    <Tag className="story-copy__title">
+                      <span>{burger.name}</span>
+                      <strong>{burger.headline}</strong>
+                    </Tag>
+                    <p className="story-note">{burger.copy}</p>
+                    <ul className="hero-ingredient-list" aria-label={`${burger.name} ingredients`}>
+                      {burger.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}
                     </ul>
-                  )}
-                  {chapter.cta && (
-                    <div className="story-actions">
-                      <a className="pill pill--blue" href="#menu">Explore the Four <ArrowIcon /></a>
-                      <a className="text-link" href="#visit">Find us</a>
-                    </div>
-                  )}
-                </article>
-              ))}
+                  </article>
+                )
+              })}
             </div>
-            <div className="scroll-cue" aria-hidden="true"><span>Scroll</span><i /></div>
-            <p className="scene-label" aria-hidden="true">Real ingredients · Scroll-built</p>
+
+            <ol className="story-index" aria-hidden="true">
+              {burgers.map((burger) => (
+                <li className="story-index__item" key={burger.name}>
+                  <span>{burger.number}</span>{burger.name}
+                </li>
+              ))}
+            </ol>
+
+            <div className="scroll-cue" aria-hidden="true"><span>Scroll through all four</span><i /></div>
           </div>
         </section>
 
         <section className="marquee" aria-hidden="true">
-          <div>Four seasons <span>✦</span> One burger <span>✦</span> Smash-grilled <span>✦</span> Never frozen <span>✦</span></div>
+          <div>Bloom <span>·</span> Jalapeños <span>·</span> Oklahoma <span>·</span> Classic <span>·</span></div>
         </section>
 
         <section id="menu" className="menu-section section-pad">
-          <div className="section-heading">
+          <div className="section-heading reveal">
             <div>
-              <p className="eyebrow">The menu · The four</p>
-              <h2>Four seasons.<br /><em>Four burgers.</em></h2>
+              <p className="eyebrow">The complete menu</p>
+              <h2>Four burgers.<br /><strong>Pick your stack.</strong></h2>
             </div>
-            <p>One signature build for every season, smash-grilled to order and finished with house sauces.</p>
+            <p>No filler builds. Four distinct burgers, smashed to order and finished exactly as listed.</p>
           </div>
+
           <div className="burger-grid">
             {burgers.map((burger) => (
-              <article className={`burger-card burger-card--${burger.tone}`} key={burger.name}>
-                <div className="burger-card__topline"><span>{burger.number}</span><span>{burger.season}</span></div>
+              <article className="burger-card" key={burger.name} style={{ '--burger-accent': burger.accent }}>
+                <div className="burger-card__topline"><span>{burger.number} / 04</span><span>Katër Burgers</span></div>
                 <div className="burger-card__image-wrap">
-                  <img src={burger.image} alt={`${burger.name} — ${burger.copy}`} width="1280" height="852" loading="lazy" />
-                  <span className="burger-card__stamp">Smash<br />fresh</span>
+                  <img src={burger.image} alt={`${burger.name} burger`} width="1280" height="852" loading="lazy" />
+                  <span className="burger-card__badge">Smashed<br />to order</span>
                 </div>
                 <div className="burger-card__body">
+                  <p className="burger-card__headline">{burger.headline}</p>
                   <h3>{burger.name}</h3>
                   <p>{burger.copy}</p>
                   <ul aria-label={`${burger.name} ingredients`}>
@@ -274,42 +277,41 @@ function App() {
           </div>
         </section>
 
-        <section id="story-section" className="brand-story section-pad">
+        <section id="why-four" className="brand-story section-pad">
           <div className="brand-story__mark" aria-hidden="true">4</div>
-          <div className="brand-story__copy">
-            <p className="eyebrow">Our story</p>
-            <h2>Four flavors,<br />one <em>obsession.</em></h2>
-            <p className="brand-story__lead">We believe a burger should taste like the moment you’re in.</p>
-            <p>So we built four — each tuned to its season, sourced fresh, smash-grilled to order, and finished with house sauces you won’t find anywhere else.</p>
-            <p className="brand-story__bold">No frozen patties. No shortcuts. Just bold, seasonal craft.</p>
+          <div className="brand-story__copy reveal">
+            <p className="eyebrow">Why four?</p>
+            <h2>A short menu.<br />A serious <strong>smash.</strong></h2>
+            <p className="brand-story__lead">Four builds let every ingredient have a job.</p>
+            <p>Bloom brings freshness. Jalapeños brings heat. Oklahoma brings onions and sear. Classic keeps the balance tight.</p>
           </div>
-          <div className="brand-story__principles">
-            <div><span>01</span><strong>Fresh daily</strong><small>Ground in-house, never frozen</small></div>
-            <div><span>02</span><strong>Seasonal sourcing</strong><small>Ingredients at their peak</small></div>
-            <div><span>03</span><strong>Smash-grilled</strong><small>Crispy edges, juicy center</small></div>
-            <div><span>04</span><strong>House sauces</strong><small>Recipes you can’t copy</small></div>
+          <div className="brand-story__principles reveal">
+            <div><span>01</span><strong>Four builds</strong><small>Clear choices, distinct flavor</small></div>
+            <div><span>02</span><strong>Fresh beef</strong><small>Smashed for crisp edges</small></div>
+            <div><span>03</span><strong>Real layers</strong><small>Every ingredient earns its place</small></div>
+            <div><span>04</span><strong>Built to order</strong><small>Assembled when you choose</small></div>
           </div>
         </section>
 
         <section id="visit" className="visit-section section-pad">
-          <div className="visit-section__intro">
-            <p className="eyebrow">Come say hi</p>
-            <h2>Find <em>us.</em></h2>
-            <p>One home, right in the heart of Tirana — dine in or grab it to go.</p>
+          <div className="visit-section__intro reveal">
+            <p className="eyebrow">Where to get the four</p>
+            <h2>21 Dhjetori.<br /><strong>Tirana.</strong></h2>
+            <p>Choose your burger, dine in or take it with you.</p>
           </div>
-          <div className="location-card">
+          <div className="location-card reveal">
             <div className="location-card__copy">
               <span className="location-dot" />
-              <h3>Tirana — 21 Dhjetori</h3>
-              <p>Rruga 21 Dhjetori — right beside Ushqimore Zuna, Tiranë</p>
+              <h3>Katër Burgers</h3>
+              <p>Rruga 21 Dhjetori — beside Ushqimore Zuna, Tiranë</p>
               <dl>
-                <div><dt>Open</dt><dd>Sun – Thu · 12:00pm – 1:00am<br />Fri – Sat · 12:00pm – 3:00am</dd></div>
+                <div><dt>Open</dt><dd>Sun – Thu · 12:00 – 01:00<br />Fri – Sat · 12:00 – 03:00</dd></div>
                 <div><dt>Service</dt><dd>Dine in & takeaway</dd></div>
               </dl>
               <a className="pill pill--blue" href="https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
             </div>
             <div className="location-card__graphic" aria-hidden="true">
-              <div className="map-grid" />
+              <span className="location-card__four">4</span>
               <div className="map-pin"><span /></div>
               <span className="map-label">21 Dhjetori</span>
             </div>
@@ -317,20 +319,19 @@ function App() {
         </section>
 
         <section className="closing-cta">
-          <div className="closing-cta__orbit" aria-hidden="true">KATËR · BURGERS · TIRANA · </div>
-          <p className="eyebrow">Come hungry</p>
-          <h2>Hungry for<br /><em>the Four?</em></h2>
+          <p className="eyebrow">You know the four</p>
+          <h2>Which one<br /><strong>are you ordering?</strong></h2>
           <div className="closing-cta__actions">
-            <a className="pill pill--cream" href="#visit">Find the location <ArrowIcon /></a>
-            <a className="text-link text-link--light" href="#menu">See the menu</a>
+            <a className="pill pill--cream" href="#menu">Compare the four <ArrowIcon /></a>
+            <a className="text-link text-link--light" href="#visit">Find Katër</a>
           </div>
         </section>
       </main>
 
       <footer className="footer">
         <img src="/images/logo-kater.png" alt="Katër Burgers" width="1200" height="282" />
-        <p>One for every season. Served cool.</p>
-        <div className="footer__links"><a href="#menu">The Four</a><a href="#story-section">Story</a><a href="#visit">Find us</a></div>
+        <p>Four burgers. One address. Tirana.</p>
+        <div className="footer__links"><a href="#menu">Four burgers</a><a href="#why-four">Why four</a><a href="#visit">Tirana</a></div>
         <p className="footer__legal">© 2026 Katër Burgers. All rights reserved.</p>
       </footer>
     </div>

@@ -60,8 +60,28 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 }
 .desktop-nav a:hover::after, .desktop-nav a:focus-visible::after,
 .footer__links a:hover::after, .footer__links a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
-.header__cta { justify-self: end; }
+.header__actions { justify-self: end; display: flex; align-items: center; gap: 14px; }
 .menu-toggle { display: none; }
+
+.lang-switch {
+  display: inline-flex; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.lang-switch button {
+  min-width: 40px; min-height: 36px; padding: 0 12px; border: 0; background: transparent;
+  color: var(--ink); font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .04em;
+  cursor: pointer; transition: background-color 180ms ease, color 180ms ease;
+}
+.lang-switch button + button { border-left: 2px solid var(--ink); }
+.lang-switch button.is-active { background: var(--blue); color: var(--white); }
+.lang-switch button:hover:not(.is-active) { background: var(--paper); }
+.lang-switch--mobile {
+  box-shadow: none; border-color: rgba(255, 255, 255, .5); align-self: flex-start; margin-top: 4px;
+}
+.lang-switch--mobile button { min-height: 40px; color: var(--white); }
+.lang-switch--mobile button + button { border-left-color: rgba(255, 255, 255, .5); }
+.lang-switch--mobile button.is-active { background: var(--white); color: var(--blue); }
+.lang-switch--mobile button:hover:not(.is-active) { background: rgba(255, 255, 255, .12); }
 
 .pill {
   min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -292,6 +312,8 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   :root { --header-h: 72px; }
   .header { top: 28px; grid-template-columns: 1fr auto auto; column-gap: 10px; }
   .desktop-nav { display: none; }
+  .header__actions { gap: 8px; }
+  .lang-switch--desktop { display: none; }
   .header__cta { min-height: 44px; padding: 0 15px; font-size: 11px; box-shadow: 3px 3px 0 var(--ink); }
   .brand { width: min(168px, 38vw); }
   .menu-toggle { width: 48px; height: 48px; display: grid; place-content: center; gap: 7px; border: 0; border-radius: 50%; background: var(--blue); cursor: pointer; }
@@ -396,7 +418,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 
 @media (max-width: 419px) {
   .header { grid-template-columns: 1fr auto; }
-  .header__cta { display: none; }
+  .header__actions { display: none; }
 }
 
 /* Calling is the conversion here, so the two location actions sit side by side

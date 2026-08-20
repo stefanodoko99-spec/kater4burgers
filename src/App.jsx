@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FourBurgerStage from './components/FourBurgerStage.jsx'
+import { burgersBase, burgerText } from './content.js'
+import { ui, useLanguage } from './i18n.js'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -16,54 +18,30 @@ const WOLT_URL = 'https://wolt.com/en/alb/tirana/restaurant/kater-burgers'
 const PRICE_SINGLE = 700
 const PRICE_DOUBLE = 900
 
-const burgers = [
-  {
-    number: '01',
-    name: 'Bloom',
-    model: 'bloom',
-    accent: '#b9e58c',
-    image: '/images/bloom.jpg',
-    headline: 'Fresh crunch. Hard sear.',
-    copy: 'Tomato and lettuce bring the crunch; cheddar and smashed beef bring the weight.',
-    ingredients: ['Brioche bun', 'Tomato', 'American cheddar', 'Smash beef', 'Lettuce'],
-  },
-  {
-    number: '02',
-    name: 'Jalapeños',
-    model: 'jalapenos',
-    accent: '#f3df65',
-    image: '/images/jalapenos.jpg',
-    headline: 'Creamy heat. Clean finish.',
-    copy: 'Jalapeños cut through herb cream sauce, American cheese and smashed beef.',
-    ingredients: ['Brioche bun', 'Jalapeños', 'Herb cream sauce', 'American cheese', 'Smash beef'],
-  },
-  {
-    number: '03',
-    name: 'Oklahoma',
-    model: 'oklahoma',
-    accent: '#f3b57a',
-    image: '/images/oklahoma.jpg',
-    headline: 'Sweet onions. Crispy edges.',
-    copy: 'Caramelized onions, cheddar and smashed beef in a stripped-back build.',
-    ingredients: ['Brioche bun', 'American cheddar', 'Smash beef', 'Caramelized onions'],
-  },
-  {
-    number: '04',
-    name: 'Classic',
-    model: 'classic',
-    accent: '#9db8ff',
-    image: '/images/classic.jpg',
-    headline: 'Everything a smash needs.',
-    copy: 'Pickles, American cheddar, smashed beef and house sauce. Direct and balanced.',
-    ingredients: ['Brioche bun', 'Pickles', 'American cheddar', 'Smash beef', 'House sauce'],
-  },
-]
-
 function ArrowIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
+  )
+}
+
+function LanguageSwitch({ lang, setLang, t, className = '' }) {
+  return (
+    <div className={`lang-switch ${className}`} role="group" aria-label="Language">
+      {['en', 'sq'].map((code) => (
+        <button
+          key={code}
+          type="button"
+          className={lang === code ? 'is-active' : ''}
+          aria-pressed={lang === code}
+          aria-label={t.switchTo[code]}
+          onClick={() => setLang(code)}
+        >
+          {code.toUpperCase()}
+        </button>
+      ))}
+    </div>
   )
 }
 
@@ -73,6 +51,16 @@ function App() {
   const progress = useRef({ value: 0 })
   const [menuOpen, setMenuOpen] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [lang, setLang] = useLanguage()
+
+  const t = ui[lang]
+  // Non-text fields (image, accent, position) stay fixed; only the words
+  // change, and every card keeps its `model` key across a language switch so
+  // GSAP-animated DOM nodes are never remounted.
+  const burgers = useMemo(
+    () => burgersBase.map((burger) => ({ ...burger, ...burgerText[lang][burger.model] })),
+    [lang],
+  )
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -163,7 +151,7 @@ function App() {
 
       return () => mm.revert()
     },
-    { scope: appRef },
+    { scope: appRef, dependencies: [lang] },
   )
 
   useEffect(() => {
@@ -175,33 +163,36 @@ function App() {
 
   return (
     <div ref={appRef} className="site-shell">
-      <a className="skip-link" href="#story">Skip to the four burgers</a>
+      <a className="skip-link" href="#story">{t.skipLink}</a>
 
-      <div className="ticker" aria-label="Katër Burgers highlights">
+      <div className="ticker" aria-label={t.tickerAria}>
         <div className="ticker__track">
-          <span>Four burgers</span><i />
-          <span>Smashed to order</span><i />
-          <span>21 Dhjetori · Tirana</span><i />
-          <span>Four burgers</span><i aria-hidden="true" />
-          <span>Smashed to order</span><i aria-hidden="true" />
-          <span>21 Dhjetori · Tirana</span><i aria-hidden="true" />
+          {t.ticker.map((label) => (
+            <React.Fragment key={label}><span>{label}</span><i /></React.Fragment>
+          ))}
+          {t.ticker.map((label) => (
+            <React.Fragment key={`dup-${label}`}><span>{label}</span><i aria-hidden="true" /></React.Fragment>
+          ))}
         </div>
       </div>
 
       <header className="header">
-        <a className="brand" href="#story" aria-label="Katër Burgers home">
+        <a className="brand" href="#story" aria-label={t.brandHome}>
           <img src="/images/logo-kater.png" alt="Katër Burgers" width="1200" height="282" />
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#menu">Four burgers</a>
-          <a href="#why-four">Why four</a>
-          <a href="#visit">Tirana</a>
+          <a href="#menu">{t.nav.menu}</a>
+          <a href="#why-four">{t.nav.why}</a>
+          <a href="#visit">{t.nav.visit}</a>
         </nav>
-        <a className="pill pill--blue header__cta" href={WOLT_URL} target="_blank" rel="noreferrer">Order on Wolt</a>
+        <div className="header__actions">
+          <LanguageSwitch lang={lang} setLang={setLang} t={t} className="lang-switch--desktop" />
+          <a className="pill pill--blue header__cta" href={WOLT_URL} target="_blank" rel="noreferrer">{t.orderOnWolt}</a>
+        </div>
         <button
           className="menu-toggle"
           type="button"
-          aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+          aria-label={menuOpen ? t.closeNav : t.openNav}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
@@ -210,15 +201,16 @@ function App() {
       </header>
 
       <div className={`mobile-menu ${menuOpen ? 'is-open' : ''}`} aria-hidden={!menuOpen}>
-        <a href="#menu" onClick={closeMenu}>Four burgers</a>
-        <a href="#why-four" onClick={closeMenu}>Why four</a>
-        <a href="#visit" onClick={closeMenu}>Tirana</a>
-        <a className="pill pill--blue mobile-menu__cta" href={WOLT_URL} target="_blank" rel="noreferrer" onClick={closeMenu}>Order on Wolt</a>
-        <a className="pill mobile-menu__cta" href={`tel:${PHONE_E164}`} onClick={closeMenu}>Call {PHONE_DISPLAY}</a>
+        <a href="#menu" onClick={closeMenu}>{t.nav.menu}</a>
+        <a href="#why-four" onClick={closeMenu}>{t.nav.why}</a>
+        <a href="#visit" onClick={closeMenu}>{t.nav.visit}</a>
+        <LanguageSwitch lang={lang} setLang={setLang} t={t} className="lang-switch--mobile" />
+        <a className="pill pill--blue mobile-menu__cta" href={WOLT_URL} target="_blank" rel="noreferrer" onClick={closeMenu}>{t.orderOnWolt}</a>
+        <a className="pill mobile-menu__cta" href={`tel:${PHONE_E164}`} onClick={closeMenu}>{t.call(PHONE_DISPLAY)}</a>
       </div>
 
       <main>
-        <section id="story" ref={storyRef} className="scroll-story" aria-label="Meet the four Katër burgers">
+        <section id="story" ref={storyRef} className="scroll-story" aria-label={t.story.ariaLabel}>
           <div className="story-stage">
             <div className="story-progress" aria-hidden="true"><span className="story-progress__fill" /></div>
 
@@ -228,14 +220,14 @@ function App() {
               {burgers.map((burger, index) => {
                 const Tag = index === 0 ? 'h1' : 'h2'
                 return (
-                  <article className={`story-copy story-copy--${burger.model}`} key={burger.name}>
-                    <p className="eyebrow">Burger {burger.number} / 04</p>
+                  <article className={`story-copy story-copy--${burger.model}`} key={burger.model}>
+                    <p className="eyebrow">{t.story.burgerOf(burger.number)}</p>
                     <Tag className="story-copy__title">
                       <span>{burger.name}</span>
                       <strong>{burger.headline}</strong>
                     </Tag>
                     <p className="story-note">{burger.copy}</p>
-                    <ul className="hero-ingredient-list" aria-label={`${burger.name} ingredients`}>
+                    <ul className="hero-ingredient-list" aria-label={`${burger.name} ${t.ariaIngredients}`}>
                       {burger.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}
                     </ul>
                   </article>
@@ -245,36 +237,36 @@ function App() {
 
             <ol className="story-index" aria-hidden="true">
               {burgers.map((burger) => (
-                <li className="story-index__item" key={burger.name}>
+                <li className="story-index__item" key={burger.model}>
                   <span>{burger.number}</span>{burger.name}
                 </li>
               ))}
             </ol>
 
-            <div className="scroll-cue" aria-hidden="true"><span>Scroll through all four</span><i /></div>
+            <div className="scroll-cue" aria-hidden="true"><span>{t.story.scrollCue}</span><i /></div>
           </div>
         </section>
 
         <section className="marquee" aria-hidden="true">
-          <div>Bloom <span>·</span> Jalapeños <span>·</span> Oklahoma <span>·</span> Classic <span>·</span></div>
+          <div>{burgers.map((burger) => <React.Fragment key={burger.model}>{burger.name} <span>·</span> </React.Fragment>)}</div>
         </section>
 
         <section id="menu" className="menu-section section-pad">
           <div className="section-heading reveal">
             <div>
-              <p className="eyebrow">The complete menu</p>
-              <h2>Four burgers.<br /><strong>Pick your stack.</strong></h2>
+              <p className="eyebrow">{t.menu.eyebrow}</p>
+              <h2>{t.menu.titleLine1}<br /><strong>{t.menu.titleStrong}</strong></h2>
             </div>
-            <p>No filler builds. Four distinct burgers, smashed to order and finished exactly as listed.</p>
+            <p>{t.menu.body}</p>
           </div>
 
           <div className="burger-grid">
             {burgers.map((burger) => (
-              <article className="burger-card" key={burger.name} style={{ '--burger-accent': burger.accent }}>
+              <article className="burger-card" key={burger.model} style={{ '--burger-accent': burger.accent }}>
                 <div className="burger-card__topline"><span>{burger.number} / 04</span><span>Katër Burgers</span></div>
                 <div className="burger-card__image-wrap">
-                  <img src={burger.image} alt={`${burger.name} burger`} width="1280" height="852" loading="lazy" />
-                  <span className="burger-card__badge">Smashed<br />to order</span>
+                  <img src={burger.image} alt={t.burgerAlt(burger.name)} width="1280" height="852" loading="lazy" />
+                  <span className="burger-card__badge">{t.menu.badgeLine1}<br />{t.menu.badgeLine2}</span>
                 </div>
                 <div className="burger-card__body">
                   <p className="burger-card__headline">{burger.headline}</p>
@@ -282,11 +274,11 @@ function App() {
                     <h3>{burger.name}</h3>
                     <p className="burger-card__price">
                       <strong>{PRICE_SINGLE} L</strong>
-                      <span>double {PRICE_DOUBLE} L</span>
+                      <span>{t.menu.double(PRICE_DOUBLE)}</span>
                     </p>
                   </div>
                   <p>{burger.copy}</p>
-                  <ul aria-label={`${burger.name} ingredients`}>
+                  <ul aria-label={`${burger.name} ${t.ariaIngredients}`}>
                     {burger.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}
                   </ul>
                 </div>
@@ -298,38 +290,37 @@ function App() {
         <section id="why-four" className="brand-story section-pad">
           <div className="brand-story__mark" aria-hidden="true">4</div>
           <div className="brand-story__copy reveal">
-            <p className="eyebrow">Why four?</p>
-            <h2>A short menu.<br />A serious <strong>smash.</strong></h2>
-            <p className="brand-story__lead">Four builds let every ingredient have a job.</p>
-            <p>Bloom brings freshness. Jalapeños brings heat. Oklahoma brings onions and sear. Classic keeps the balance tight.</p>
+            <p className="eyebrow">{t.why.eyebrow}</p>
+            <h2>{t.why.titleLine1}<br /><strong>{t.why.titleStrong}</strong></h2>
+            <p className="brand-story__lead">{t.why.lead}</p>
+            <p>{t.why.body}</p>
           </div>
           <div className="brand-story__principles reveal">
-            <div><span>01</span><strong>Four builds</strong><small>Clear choices, distinct flavor</small></div>
-            <div><span>02</span><strong>Fresh beef</strong><small>Smashed for crisp edges</small></div>
-            <div><span>03</span><strong>Real layers</strong><small>Every ingredient earns its place</small></div>
-            <div><span>04</span><strong>Built to order</strong><small>Assembled when you choose</small></div>
+            {t.why.principles.map((item) => (
+              <div key={item.n}><span>{item.n}</span><strong>{item.title}</strong><small>{item.body}</small></div>
+            ))}
           </div>
         </section>
 
         <section id="visit" className="visit-section section-pad">
           <div className="visit-section__intro reveal">
-            <p className="eyebrow">Where to get the four</p>
-            <h2>21 Dhjetori.<br /><strong>Tirana.</strong></h2>
-            <p>Choose your burger, dine in or take it with you.</p>
+            <p className="eyebrow">{t.visit.eyebrow}</p>
+            <h2>{t.visit.titleLine1}<br /><strong>{t.visit.titleStrong}</strong></h2>
+            <p>{t.visit.body}</p>
           </div>
           <div className="location-card reveal">
             <div className="location-card__copy">
               <span className="location-dot" />
               <h3>Katër Burgers</h3>
-              <p>Rruga e Kavajës, Kryqëzimi 21 Dhjetori — beside Ushqimore Zuna, Tiranë 1001</p>
+              <p>{t.visit.address}</p>
               <dl>
-                <div><dt>Open</dt><dd>Sun – Thu · 12:00 – 01:00<br />Fri – Sat · 12:00 – 03:00</dd></div>
-                <div><dt>Service</dt><dd>Dine in & takeaway</dd></div>
+                <div><dt>{t.visit.open}</dt><dd>{t.visit.hours1}<br />{t.visit.hours2}</dd></div>
+                <div><dt>{t.visit.service}</dt><dd>{t.visit.serviceValue}</dd></div>
               </dl>
               <div className="location-card__actions">
-                <a className="pill pill--blue" href={WOLT_URL} target="_blank" rel="noreferrer">Order on Wolt <ArrowIcon /></a>
-                <a className="pill" href={`tel:${PHONE_E164}`}>Call · {PHONE_DISPLAY}</a>
-                <a className="pill" href="https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652" target="_blank" rel="noreferrer">Get directions <ArrowIcon /></a>
+                <a className="pill pill--blue" href={WOLT_URL} target="_blank" rel="noreferrer">{t.orderOnWolt} <ArrowIcon /></a>
+                <a className="pill" href={`tel:${PHONE_E164}`}>{t.callDot(PHONE_DISPLAY)}</a>
+                <a className="pill" href="https://www.google.com/maps/place/Kater+Burgers/@41.3259692,19.8038652,19z/data=!4m6!3m5!1s0x1350317118dee2f7:0x9158e3d71e372308!8m2!3d41.3259692!4d19.8038652" target="_blank" rel="noreferrer">{t.visit.directions} <ArrowIcon /></a>
               </div>
             </div>
             <div className="location-card__graphic" aria-hidden="true">
@@ -341,20 +332,20 @@ function App() {
         </section>
 
         <section className="closing-cta">
-          <p className="eyebrow">You know the four</p>
-          <h2>Which one<br /><strong>are you ordering?</strong></h2>
+          <p className="eyebrow">{t.closing.eyebrow}</p>
+          <h2>{t.closing.titleLine1}<br /><strong>{t.closing.titleStrong}</strong></h2>
           <div className="closing-cta__actions">
-            <a className="pill pill--cream" href={WOLT_URL} target="_blank" rel="noreferrer">Order on Wolt <ArrowIcon /></a>
-            <a className="text-link text-link--light" href={`tel:${PHONE_E164}`}>Or call {PHONE_DISPLAY}</a>
+            <a className="pill pill--cream" href={WOLT_URL} target="_blank" rel="noreferrer">{t.orderOnWolt} <ArrowIcon /></a>
+            <a className="text-link text-link--light" href={`tel:${PHONE_E164}`}>{t.orCall(PHONE_DISPLAY)}</a>
           </div>
         </section>
       </main>
 
       <footer className="footer">
         <img src="/images/logo-kater.png" alt="Katër Burgers" width="1200" height="282" />
-        <p>Four burgers. One address. Tirana.</p>
-        <div className="footer__links"><a href="#menu">Four burgers</a><a href="#why-four">Why four</a><a href="#visit">Tirana</a></div>
-        <p className="footer__legal">© 2026 Katër Burgers. All rights reserved.</p>
+        <p>{t.footer.tagline}</p>
+        <div className="footer__links"><a href="#menu">{t.nav.menu}</a><a href="#why-four">{t.nav.why}</a><a href="#visit">{t.nav.visit}</a></div>
+        <p className="footer__legal">{t.footer.legal}</p>
       </footer>
     </div>
   )

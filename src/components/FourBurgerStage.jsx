@@ -54,6 +54,15 @@ const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value))
 const range = (value, start, end) => clamp((value - start) / (end - start))
 const smooth = (value) => value * value * (3 - 2 * value)
 
+// .scroll-story is 720vh and the sticky .story-stage pin is 100svh, so the
+// pin releases at (720-100)/720 ≈ 0.861 of the way through and everything
+// inside starts scrolling away with the page. The last burger previously had
+// no exit fade - it relied on that release to take it out of view - so it
+// rode past the header at full opacity every time. [0.84, 0.868] straddles
+// that release point deliberately: it's already down to ~0.2 opacity by 0.861
+// (so nothing highly visible ever crosses the header) while staying at least
+// partly visible right up to release (so there's no dead gap before it).
+
 export default function FourBurgerStage({ burgers, progress, reduceMotion }) {
   const sceneRefs = useRef([])
   const layerRefs = useRef([])
@@ -79,7 +88,7 @@ export default function FourBurgerStage({ burgers, progress, reduceMotion }) {
           ? 1
           : smooth(range(local, -0.16, 0.08))
         const exit = burgerIndex === burgers.length - 1
-          ? 1
+          ? 1 - smooth(range(p, 0.84, 0.868))
           : 1 - smooth(range(local, 0.8, 1.08))
         const visibility = enter * exit
         const expand = smooth(range(local, 0.12, 0.43))

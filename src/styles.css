@@ -292,7 +292,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 .text-link--light { color: white; }
 
 .footer { display: grid; grid-template-columns: 1fr 1fr auto; gap: 20px 38px; align-items: center; padding: 48px var(--pad); border-top: 2px solid var(--ink); background: white; }
-.footer img { width: 185px; }
+.footer img { width: 185px; height: auto; }
 .footer > p { margin: 0; font-size: 13px; font-weight: 700; }
 .footer__links { display: flex; gap: 26px; font-size: 13px; font-weight: 800; }
 .footer__legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--line); color: rgba(7, 24, 79, .62); }

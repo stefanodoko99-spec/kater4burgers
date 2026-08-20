@@ -449,3 +449,36 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .burger-card__title-row { flex-direction: column; align-items: flex-start; gap: 6px; }
   .burger-card__price { justify-items: start; text-align: left; }
 }
+
+/* Real customer quotes, sourced verbatim from Google - the design must read
+   as testimonials, not decoration, so stars carry an aria-label and the
+   quotes get real quotation marks rather than styled placeholders. */
+.stars { display: inline-flex; gap: 3px; }
+.stars svg { width: 18px; height: 18px; fill: var(--line); }
+.stars svg.is-filled { fill: var(--blue); }
+
+.reviews-summary {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; text-decoration: none; color: var(--ink);
+}
+.reviews-summary__value { font-size: clamp(40px, 4vw, 56px); font-weight: 900; letter-spacing: -.02em; line-height: 1; }
+.reviews-summary .stars svg { width: 20px; height: 20px; }
+.reviews-summary__count {
+  flex-basis: 100%; margin-top: 4px; color: var(--muted, rgba(7, 24, 79, .62)); font-size: 14px; font-weight: 700;
+}
+.reviews-summary:hover .reviews-summary__value { text-decoration: underline; text-underline-offset: 4px; }
+
+.reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+.review-card {
+  padding: 28px; border: 2px solid var(--ink); border-radius: 22px; background: white;
+  box-shadow: 6px 6px 0 var(--ink); display: flex; flex-direction: column; gap: 16px;
+}
+.review-card__text { margin: 0; font-size: 16px; line-height: 1.55; }
+.review-card__author {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0;
+  padding-top: 16px; border-top: 1px solid var(--line); font-weight: 800; font-size: 14px;
+}
+.review-card__author span { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; opacity: .5; }
+
+@media (max-width: 900px) {
+  .reviews-grid { grid-template-columns: 1fr; }
+}

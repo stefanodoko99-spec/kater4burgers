@@ -77,6 +77,15 @@ export const ui = {
         { n: '04', title: 'Built to order', body: 'Assembled when you choose' },
       ],
     },
+    reviews: {
+      eyebrow: 'On Google',
+      titleLine1: 'Five stars.',
+      titleStrong: 'Every time.',
+      ratingOf: (value) => `${value} out of 5`,
+      countLabel: (count) => `${count} Google reviews`,
+      seeAll: 'See all reviews on Google',
+      googleReview: 'Google review',
+    },
     visit: {
       eyebrow: 'Where to get the four',
       titleLine1: '21 Dhjetori.',
@@ -141,6 +150,15 @@ export const ui = {
         { n: '03', title: 'Shtresa të vërteta', body: 'Çdo përbërës e meriton vendin e vet' },
         { n: '04', title: 'Përgatitet me porosi', body: 'Montohet kur ti vendos' },
       ],
+    },
+    reviews: {
+      eyebrow: 'Në Google',
+      titleLine1: 'Pesë yje.',
+      titleStrong: 'Çdo herë.',
+      ratingOf: (value) => `${value} nga 5`,
+      countLabel: (count) => `${count} vlerësime në Google`,
+      seeAll: 'Shiko të gjitha vlerësimet në Google',
+      googleReview: 'Vlerësim në Google',
     },
     visit: {
       eyebrow: 'Ku i gjen të katërta',

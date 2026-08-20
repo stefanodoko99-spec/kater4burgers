@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FourBurgerStage from './components/FourBurgerStage.jsx'
 import { burgersBase, burgerText } from './content.js'
 import { ui, useLanguage } from './i18n.js'
+import { ratingSummary, reviews } from './reviews.js'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -23,6 +24,21 @@ function ArrowIcon() {
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
+  )
+}
+
+const STAR_PATH = 'M12 2.6l2.83 6.28 6.89.66-5.2 4.6 1.55 6.76L12 17.6l-6.07 3.3 1.55-6.76-5.2-4.6 6.89-.66z'
+
+function Stars({ rating, label }) {
+  const full = Math.round(rating)
+  return (
+    <span className="stars" role="img" aria-label={label}>
+      {Array.from({ length: 5 }, (_, i) => (
+        <svg key={i} viewBox="0 0 24 24" aria-hidden="true" className={i < full ? 'is-filled' : ''}>
+          <path d={STAR_PATH} />
+        </svg>
+      ))}
+    </span>
   )
 }
 
@@ -300,6 +316,35 @@ function App() {
               <div key={item.n}><span>{item.n}</span><strong>{item.title}</strong><small>{item.body}</small></div>
             ))}
           </div>
+        </section>
+
+        <section id="reviews" className="reviews-section section-pad">
+          <div className="section-heading reveal">
+            <div>
+              <p className="eyebrow">{t.reviews.eyebrow}</p>
+              <h2>{t.reviews.titleLine1}<br /><strong>{t.reviews.titleStrong}</strong></h2>
+            </div>
+            <a className="reviews-summary" href={ratingSummary.url} target="_blank" rel="noreferrer">
+              <span className="reviews-summary__value">{ratingSummary.value.toFixed(1)}</span>
+              <Stars rating={ratingSummary.value} label={t.reviews.ratingOf(ratingSummary.value.toFixed(1))} />
+              <span className="reviews-summary__count">{t.reviews.countLabel(ratingSummary.count)}</span>
+            </a>
+          </div>
+
+          <div className="reviews-grid">
+            {reviews.map((review) => (
+              <article className="review-card reveal" key={review.author}>
+                <Stars rating={review.rating} label={t.reviews.ratingOf(review.rating)} />
+                <p className="review-card__text">“{review.text}”</p>
+                <p className="review-card__author">
+                  {review.author}
+                  <span>{t.reviews.googleReview}</span>
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <a className="text-link reveal" href={ratingSummary.url} target="_blank" rel="noreferrer">{t.reviews.seeAll}</a>
         </section>
 
         <section id="visit" className="visit-section section-pad">

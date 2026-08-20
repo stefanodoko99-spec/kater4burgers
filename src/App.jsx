@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import FourBurgerStage from './components/FourBurgerStage.jsx'
 import { burgersBase, burgerText } from './content.js'
 import { ui, useLanguage } from './i18n.js'
 import { ratingSummary, reviews } from './reviews.js'
@@ -63,78 +62,23 @@ function LanguageSwitch({ lang, setLang, t, className = '' }) {
 
 function App() {
   const appRef = useRef(null)
-  const storyRef = useRef(null)
-  const progress = useRef({ value: 0 })
   const [menuOpen, setMenuOpen] = useState(false)
-  const [reduceMotion, setReduceMotion] = useState(false)
   const [lang, setLang] = useLanguage()
 
   const t = ui[lang]
-  // Non-text fields (image, accent, position) stay fixed; only the words
-  // change, and every card keeps its `model` key across a language switch so
-  // GSAP-animated DOM nodes are never remounted.
   const burgers = useMemo(
     () => burgersBase.map((burger) => ({ ...burger, ...burgerText[lang][burger.model] })),
     [lang],
   )
 
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const update = () => setReduceMotion(media.matches)
-    update()
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
-  }, [])
-
   useGSAP(
     () => {
       const mm = gsap.matchMedia()
 
+      // Every animation lives inside the no-preference branch, so under
+      // prefers-reduced-motion nothing runs and each element simply stays at
+      // its natural, visible state - no separate fallback to keep in sync.
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const storyTimeline = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: storyRef.current,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.65,
-            invalidateOnRefresh: true,
-          },
-        })
-
-        storyTimeline.to(progress.current, { value: 1, duration: 1 }, 0)
-
-        const chapterEls = gsap.utils.toArray('.story-copy')
-        const indexEls = gsap.utils.toArray('.story-index__item')
-        gsap.set(chapterEls, { autoAlpha: 0, y: 28 })
-        gsap.set(chapterEls[0], { autoAlpha: 1, y: 0 })
-        gsap.set(indexEls, { opacity: 0.34, x: 0 })
-        gsap.set(indexEls[0], { opacity: 1, x: -8 })
-
-        chapterEls.forEach((chapter, index) => {
-          const start = index / burgers.length
-          const end = (index + 1) / burgers.length
-          if (index > 0) {
-            storyTimeline.to(chapter, { autoAlpha: 1, y: 0, duration: 0.035, ease: 'power2.out' }, start - 0.015)
-            storyTimeline.to(indexEls[index], { opacity: 1, x: -8, duration: 0.035 }, start - 0.015)
-          }
-          if (index < chapterEls.length - 1) {
-            storyTimeline.to(chapter, { autoAlpha: 0, y: -22, duration: 0.035, ease: 'power2.in' }, end - 0.045)
-            storyTimeline.to(indexEls[index], { opacity: 0.34, x: 0, duration: 0.035 }, end - 0.045)
-          }
-        })
-
-        gsap.to('.story-progress__fill', {
-          scaleX: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: storyRef.current,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-          },
-        })
-
         gsap.utils.toArray('.reveal').forEach((section) => {
           gsap.from(section, {
             y: 20,
@@ -153,16 +97,6 @@ function App() {
           ease: 'power2.out',
           scrollTrigger: { trigger: '.burger-grid', start: 'top 82%', once: true },
         })
-
-        return () => {
-          progress.current.value = 0
-        }
-      })
-
-      mm.add('(prefers-reduced-motion: reduce)', () => {
-        progress.current.value = 0.125
-        gsap.set('.story-copy', { autoAlpha: 0 })
-        gsap.set('.story-copy:first-of-type', { autoAlpha: 1, y: 0 })
       })
 
       return () => mm.revert()
@@ -179,7 +113,7 @@ function App() {
 
   return (
     <div ref={appRef} className="site-shell">
-      <a className="skip-link" href="#story">{t.skipLink}</a>
+      <a className="skip-link" href="#menu">{t.skipLink}</a>
 
       <div className="ticker" aria-label={t.tickerAria}>
         <div className="ticker__track">
@@ -226,41 +160,34 @@ function App() {
       </div>
 
       <main>
-        <section id="story" ref={storyRef} className="scroll-story" aria-label={t.story.ariaLabel}>
-          <div className="story-stage">
-            <div className="story-progress" aria-hidden="true"><span className="story-progress__fill" /></div>
-
-            <FourBurgerStage burgers={burgers} progress={progress} reduceMotion={reduceMotion} />
-
-            <div className="story-copy-wrap">
-              {burgers.map((burger, index) => {
-                const Tag = index === 0 ? 'h1' : 'h2'
-                return (
-                  <article className={`story-copy story-copy--${burger.model}`} key={burger.model}>
-                    <p className="eyebrow">{t.story.burgerOf(burger.number)}</p>
-                    <Tag className="story-copy__title">
-                      <span>{burger.name}</span>
-                      <strong>{burger.headline}</strong>
-                    </Tag>
-                    <p className="story-note">{burger.copy}</p>
-                    <ul className="hero-ingredient-list" aria-label={`${burger.name} ${t.ariaIngredients}`}>
-                      {burger.ingredients.map((ingredient) => <li key={ingredient}>{ingredient}</li>)}
-                    </ul>
-                  </article>
-                )
-              })}
+        <section id="story" className="hero">
+          <div className="hero__copy">
+            <p className="eyebrow">{t.hero.eyebrow}</p>
+            <h1 className="hero__title">{t.hero.titleLine1}<strong>{t.hero.titleStrong}</strong></h1>
+            <p className="hero__lead">{t.hero.lead}</p>
+            <div className="hero__actions">
+              <a className="pill pill--blue" href={WOLT_URL} target="_blank" rel="noreferrer">{t.orderOnWolt} <ArrowIcon /></a>
+              <a className="pill" href={`tel:${PHONE_E164}`}>{t.callDot(PHONE_DISPLAY)}</a>
             </div>
-
-            <ol className="story-index" aria-hidden="true">
-              {burgers.map((burger) => (
-                <li className="story-index__item" key={burger.model}>
-                  <span>{burger.number}</span>{burger.name}
-                </li>
-              ))}
-            </ol>
-
-            <div className="scroll-cue" aria-hidden="true"><span>{t.story.scrollCue}</span><i /></div>
+            <a className="hero__rating" href={ratingSummary.url} target="_blank" rel="noreferrer">
+              <Stars rating={ratingSummary.value} label={t.reviews.ratingOf(ratingSummary.value.toFixed(1))} />
+              <span><strong>{ratingSummary.value.toFixed(1)}</strong> · {t.reviews.countLabel(ratingSummary.count)}</span>
+            </a>
           </div>
+
+          <figure className="hero__card">
+            <img
+              src="/images/bloom.jpg"
+              alt={t.burgerAlt(burgers[0].name)}
+              width="1280"
+              height="852"
+              fetchPriority="high"
+            />
+            <figcaption>
+              <span>{t.hero.priceLabel}</span>
+              <strong>{PRICE_SINGLE} L</strong>
+            </figcaption>
+          </figure>
         </section>
 
         <section className="marquee" aria-hidden="true">

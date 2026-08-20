@@ -50,10 +50,12 @@ export const ui = {
     ariaIngredients: 'ingredients',
     burgerAlt: (name) => `${name} burger`,
     switchTo: { en: 'Switch to English', sq: 'Switch to Albanian' },
-    story: {
-      ariaLabel: 'Meet the four Katër burgers',
-      burgerOf: (n) => `Burger ${n} / 04`,
-      scrollCue: 'Scroll through all four',
+    hero: {
+      eyebrow: 'Smash burgers · Tiranë',
+      titleLine1: 'Four burgers.',
+      titleStrong: 'Smashed to order, done properly.',
+      lead: 'Fresh beef, never frozen, pressed hard on the flat top for crisp edges. Four builds — that is the whole menu.',
+      priceLabel: 'Each',
     },
     menu: {
       eyebrow: 'The complete menu',
@@ -124,10 +126,12 @@ export const ui = {
     ariaIngredients: 'përbërësit',
     burgerAlt: (name) => `Berger ${name}`,
     switchTo: { en: 'Kalo në anglisht', sq: 'Kalo në shqip' },
-    story: {
-      ariaLabel: 'Njihuni me katër bergerët Katër',
-      burgerOf: (n) => `Berger ${n} / 04`,
-      scrollCue: 'Lëviz poshtë për të parë të katërta',
+    hero: {
+      eyebrow: 'Smash burger · Tiranë',
+      titleLine1: 'Katër bergerë.',
+      titleStrong: 'Të shtypur në porosi, si duhet.',
+      lead: 'Mish i freskët, kurrë i ngrirë, i shtypur fort në skarë për buzë krokante. Katër burgerë — kaq është e gjithë menyja.',
+      priceLabel: 'Copa',
     },
     menu: {
       eyebrow: 'Menyja e plotë',

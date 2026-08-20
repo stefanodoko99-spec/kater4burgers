@@ -105,83 +105,65 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 .mobile-menu.is-open { visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
 .mobile-menu a { font-size: clamp(42px, 12vw, 72px); font-weight: 900; letter-spacing: -.06em; }
 
-.scroll-story { position: relative; height: 720vh; }
-.story-stage {
-  position: sticky; top: 0; width: 100%; height: 100svh; min-height: 680px; overflow: hidden;
+/* Hero. This replaced a 720vh sticky-pinned "scroll story" that drove four 3D
+   burger stages from a requestAnimationFrame loop. That version overlapped the
+   headline and the fixed header, and its correctness depended on scroll
+   progress, pin release and rAF timing all staying in sync - which they did
+   not. A static two-column band has no such coupling: nothing here can drift. */
+.hero {
+  display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(30px, 4.5vw, 76px);
+  align-items: center;
+  padding: calc(var(--header-h) + 28px + clamp(38px, 5vw, 74px)) var(--pad) clamp(54px, 6.5vw, 96px);
+  border-bottom: 2px solid var(--ink);
   background: linear-gradient(135deg, var(--white), #f6f8ff 52%, var(--blue-soft));
 }
-.story-stage::before {
-  content: ""; position: absolute; z-index: 1; inset: 106px 0 0; opacity: .38; pointer-events: none;
-  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: min(24vw, 290px) min(24vw, 290px);
-  mask-image: linear-gradient(to bottom, black, transparent 82%);
-}
-.story-progress { position: absolute; z-index: 12; top: 106px; right: 0; left: 0; height: 4px; background: rgba(7, 24, 79, .12); }
-.story-progress__fill { display: block; width: 100%; height: 100%; background: var(--blue); transform: scaleX(0); transform-origin: left; }
-
-.four-burger-stage {
-  position: absolute; z-index: 3; inset: 106px 0 0; overflow: hidden; perspective: 1400px;
-  pointer-events: none;
-}
-.burger-scene {
-  position: absolute; left: 68%; top: 44%; width: min(34vw, 520px); aspect-ratio: 1120 / 850;
-  margin: 0; opacity: 0; visibility: hidden; transform-style: preserve-3d;
-  transform-origin: center; will-change: transform, opacity;
-}
-.burger-scene:first-child { opacity: 1; visibility: visible; }
-.burger-scene__halo {
-  position: absolute; z-index: 0; left: 50%; top: 47%; width: 92%; aspect-ratio: 1;
-  border: 1px solid rgba(7, 24, 79, .15); border-radius: 50%; background: var(--burger-accent);
-  opacity: .54; transform: translate3d(-50%, -50%, -40px);
-}
-.burger-scene__number {
-  position: absolute; z-index: 1; top: -17%; right: -8%; color: rgba(7, 24, 79, .11);
-  font-size: clamp(110px, 16vw, 250px); font-weight: 900; line-height: 1; letter-spacing: -.1em;
-}
-.burger-scene__layer {
-  position: absolute; left: 0; width: 100%; height: auto; max-width: none; user-select: none;
-  filter: drop-shadow(0 20px 18px rgba(7, 24, 79, .11)); will-change: transform;
-}
-
-.story-copy-wrap { position: relative; z-index: 6; width: 100%; height: 100%; pointer-events: none; }
-.story-copy {
-  position: absolute; left: var(--pad); top: 50%; width: min(430px, 34vw); visibility: hidden;
-  transform: translateY(-42%); text-wrap: balance;
-}
-.story-copy:first-child { visibility: visible; }
+.hero__copy { min-width: 0; }
 .eyebrow {
   margin: 0 0 16px; color: var(--blue); font-size: 11px; font-weight: 900;
   letter-spacing: .18em; text-transform: uppercase;
 }
-.story-copy__title, .section-heading h2, .brand-story h2, .visit-section h2, .closing-cta h2 {
+.hero__title, .section-heading h2, .brand-story h2, .visit-section h2, .closing-cta h2 {
   margin: 0; font-size: clamp(58px, 6.6vw, 104px); font-weight: 900; line-height: .82;
   letter-spacing: -.075em; text-transform: uppercase;
 }
-.story-copy__title span, .story-copy__title strong { display: block; }
-.story-copy__title strong {
-  max-width: 430px; margin-top: 14px; color: var(--blue); font-size: clamp(25px, 2.6vw, 40px);
-  font-weight: 650; line-height: .95; letter-spacing: -.045em; text-transform: none;
+.hero__title strong {
+  display: block; max-width: 14ch; margin-top: 14px; color: var(--blue);
+  font-size: clamp(25px, 2.6vw, 40px); font-weight: 650; line-height: .95;
+  letter-spacing: -.045em; text-transform: none;
 }
-.story-note { max-width: 410px; margin: 24px 0 0; font-size: clamp(15px, 1.35vw, 19px); font-weight: 540; line-height: 1.5; }
-.hero-ingredient-list, .burger-card ul {
+.hero__lead {
+  max-width: 44ch; margin: 26px 0 0; font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 540; line-height: 1.55;
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+.hero__rating {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 26px;
+  font-size: 14px; font-weight: 700;
+}
+.hero__rating .stars svg { width: 16px; height: 16px; }
+.hero__rating:hover span:last-child { text-decoration: underline; text-underline-offset: 3px; }
+
+.hero__card {
+  position: relative; min-width: 0; margin: 0; overflow: hidden;
+  border: 2px solid var(--ink); border-radius: 26px; background: white;
+  box-shadow: 10px 10px 0 var(--ink);
+}
+.hero__card img { width: 100%; height: auto; }
+.hero__card figcaption {
+  position: absolute; right: 16px; bottom: 16px; display: grid; justify-items: end;
+  padding: 10px 16px; border: 2px solid var(--ink); border-radius: 999px;
+  background: white; box-shadow: 4px 4px 0 var(--ink);
+}
+.hero__card figcaption span { font-size: 10px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; opacity: .6; }
+.hero__card figcaption strong { font-size: 20px; font-weight: 900; letter-spacing: -.02em; }
+
+.burger-card ul {
   list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0 0; padding: 0;
 }
-.hero-ingredient-list li, .burger-card li {
+.burger-card li {
   padding: 7px 10px; border: 1.5px solid var(--ink); border-radius: 999px; background: rgba(255, 255, 255, .78);
   font-size: 11px; font-weight: 850; letter-spacing: .05em; text-transform: uppercase;
 }
-.story-index {
-  position: absolute; z-index: 8; top: 128px; right: var(--pad); display: flex; gap: clamp(12px, 2vw, 30px);
-  margin: 0; padding: 0; list-style: none; font-size: 11px; font-weight: 850; text-transform: uppercase;
-}
-.story-index__item { display: flex; gap: 7px; align-items: center; will-change: transform, opacity; }
-.story-index__item span { color: var(--blue); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.scroll-cue {
-  position: absolute; z-index: 8; bottom: 30px; left: var(--pad); display: flex; align-items: center; gap: 12px;
-  font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase;
-}
-.scroll-cue i { width: 54px; height: 2px; background: var(--ink); animation: cue 1.6s ease-in-out infinite; }
-@keyframes cue { 50% { transform: scaleX(.45); transform-origin: left; } }
 
 .marquee { overflow: hidden; border-block: 2px solid var(--ink); color: white; background: var(--blue); }
 .marquee div {
@@ -301,8 +283,6 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 
 @media (max-width: 980px) {
   .desktop-nav { gap: 20px; }
-  .story-copy { width: min(390px, 38vw); }
-  .burger-scene { left: 70%; width: min(38vw, 500px); }
   .brand-story { grid-template-columns: .65fr 1.35fr; }
   .brand-story__principles { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
   .brand-story__principles div:nth-child(3) { border-bottom: 1px solid rgba(255, 255, 255, .45); }
@@ -311,6 +291,8 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 @media (max-width: 760px) {
   :root { --header-h: 72px; }
   .header { top: 28px; grid-template-columns: 1fr auto auto; column-gap: 10px; }
+  .hero { grid-template-columns: 1fr; }
+  .hero__card { order: -1; }
   .desktop-nav { display: none; }
   .header__actions { gap: 8px; }
   .lang-switch--desktop { display: none; }
@@ -322,23 +304,8 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .menu-is-open .menu-toggle span:last-child { transform: translateY(-4.5px) rotate(-45deg); }
   .mobile-menu { inset-block-start: 100px; }
 
-  .scroll-story { height: 650vh; }
-  .story-stage { min-height: 700px; }
-  .story-stage::before, .four-burger-stage { inset-block-start: 100px; }
-  .story-progress { top: 100px; }
-  .burger-scene { left: 50%; top: 33%; width: min(74vw, 430px); }
-  .burger-scene__number { top: -12%; right: -5%; font-size: 36vw; }
-  .burger-scene__halo { width: 90%; }
-  .story-copy { top: auto; right: var(--pad); bottom: max(50px, env(safe-area-inset-bottom)); left: var(--pad); width: auto; transform: none; }
-  .story-copy__title { font-size: clamp(42px, 13vw, 70px); line-height: .82; }
-  .story-copy__title strong { max-width: 310px; margin-top: 9px; font-size: clamp(23px, 6.8vw, 34px); }
-  .story-note { max-width: 92%; margin-top: 13px; font-size: 14px; line-height: 1.4; }
-  .hero-ingredient-list { max-width: 95%; margin-top: 11px; gap: 5px; }
-  .hero-ingredient-list li { padding: 6px 10px; font-size: 11px; }
-  .story-index { top: 114px; right: var(--pad); left: var(--pad); justify-content: space-between; gap: 8px; }
-  .story-index__item { font-size: 0; }
-  .story-index__item span { font-size: 10px; }
-  .scroll-cue { display: none; }
+  .hero__title { font-size: clamp(42px, 13vw, 70px); line-height: .82; }
+  .hero__title strong { max-width: 310px; margin-top: 9px; font-size: clamp(23px, 6.8vw, 34px); }
 
   .section-heading, .visit-section__intro { grid-template-columns: 1fr; gap: 30px; }
   .section-heading > p, .visit-section__intro > p:last-child { max-width: 600px; }
@@ -353,15 +320,8 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .ticker__track { gap: 19px; }
   .header { padding-inline: 18px; }
   .brand { width: 180px; }
-  .burger-scene { top: 31%; width: min(78vw, 360px); }
-  .story-copy { right: 18px; bottom: max(42px, env(safe-area-inset-bottom)); left: 18px; }
-  .story-copy .eyebrow { margin-bottom: 8px; font-size: 9px; }
-  .story-copy__title { font-size: clamp(38px, 12vw, 56px); }
-  .story-copy__title strong { font-size: clamp(21px, 6.3vw, 30px); }
-  .story-note { margin-top: 10px; font-size: 13px; }
-  .hero-ingredient-list { max-width: 100%; margin-top: 9px; }
-  .hero-ingredient-list li { padding: 6px 9px; font-size: 11px; }
-  .story-index { top: 111px; right: 18px; left: 18px; }
+  .hero__title { font-size: clamp(38px, 12vw, 56px); }
+  .hero__title strong { font-size: clamp(21px, 6.3vw, 30px); }
   .section-pad { padding-block: 80px; }
   .section-heading { margin-bottom: 46px; }
   .section-heading h2, .brand-story h2 { font-size: clamp(46px, 15vw, 70px); }
@@ -383,26 +343,13 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 }
 
 @media (max-height: 560px) and (orientation: landscape) {
-  .scroll-story { height: 560vh; }
-  .story-stage { min-height: 100svh; }
-  .burger-scene { left: 70%; top: 47%; width: min(39vw, 480px); }
-  .story-copy { top: auto; right: auto; bottom: 16px; left: var(--pad); width: 45vw; transform: none; }
-  .story-copy__title { font-size: clamp(34px, 6vw, 54px); }
-  .story-copy__title strong { margin-top: 6px; font-size: clamp(17px, 3vw, 25px); }
-  .story-note { margin-top: 7px; font-size: 11px; line-height: 1.25; }
-  .hero-ingredient-list { margin-top: 6px; }
-  .hero-ingredient-list li { padding: 5px 9px; font-size: 11px; }
-  .story-index, .scroll-cue { display: none; }
+  .hero__title { font-size: clamp(34px, 6vw, 54px); }
+  .hero__title strong { margin-top: 6px; font-size: clamp(17px, 3vw, 25px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
-  .scroll-story { height: 100svh; min-height: 700px; }
-  .story-stage { position: relative; }
-  .story-copy:not(:first-child) { display: none; }
-  .story-copy:first-child { visibility: visible !important; opacity: 1 !important; }
-  .story-progress, .story-index, .scroll-cue { display: none; }
 }
 
 /* The order CTA must survive on small screens. Down to 420px it stays in the

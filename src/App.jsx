@@ -209,7 +209,6 @@ function App() {
             <p className="eyebrow">{t.why.eyebrow}</p>
             <h2>{t.why.titleLine1}<br /><strong>{t.why.titleStrong}</strong></h2>
             <p className="brand-story__lead">{t.why.lead}</p>
-            <p>{t.why.body}</p>
           </div>
           <div className="brand-story__principles reveal">
             {t.why.principles.map((item) => (

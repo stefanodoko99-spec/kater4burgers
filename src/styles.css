@@ -212,7 +212,6 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 .brand-story h2 { font-size: clamp(56px, 6.7vw, 104px); }
 .brand-story h2 strong { color: #9db8ff; }
 .brand-story__lead { margin: 42px 0 20px; font-size: clamp(23px, 2.5vw, 38px); font-weight: 750; line-height: 1.1; letter-spacing: -.035em; }
-.brand-story__copy > p:last-child { max-width: 640px; font-size: 17px; line-height: 1.6; }
 .brand-story__principles { display: flex; flex-direction: column; justify-content: center; }
 .brand-story__principles div {
   display: grid; grid-template-columns: 34px 1fr; gap: 4px 12px; padding: 19px 0;

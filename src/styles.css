@@ -93,6 +93,14 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 .pill--blue { color: white; background: var(--blue); }
 .pill--cream { color: var(--ink); background: white; }
 .pill svg { width: 18px; height: 18px; }
+/* Header CTA carries the Wolt mark alone - no verb, no language. That makes
+   it narrow enough to survive on the smallest screens, where the text version
+   had to be hidden entirely. */
+.header__cta--mark { padding: 0 17px; background: white; }
+.wolt-mark {
+  color: #00c2e8; font-size: 18px; font-weight: 900; letter-spacing: -.05em; line-height: 1;
+}
+
 .text-link { min-height: 44px; display: inline-flex; align-items: center; border-bottom: 2px solid currentColor; font-weight: 800; }
 
 /* Hero. This replaced a 720vh sticky-pinned "scroll story" that drove four 3D
@@ -300,7 +308,14 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 @media (max-width: 480px) {
   .ticker__track { gap: 19px; }
   .header { padding-inline: 18px; }
-  .brand { width: 180px; }
+  /* Logo, language and the Wolt mark all have to share one row here, so the
+     logo gives way first and the two controls tighten up. */
+  .brand { width: min(150px, 40vw); }
+  .lang-select { gap: 5px; padding: 0 29px 0 11px; }
+  .lang-select select { font-size: 11px; }
+  .lang-select__chevron { right: 9px; width: 13px; }
+  .header__cta--mark { padding: 0 14px; }
+  .wolt-mark { font-size: 16px; }
   .hero__title { font-size: clamp(38px, 12vw, 56px); }
   .hero__title strong { font-size: clamp(21px, 6.3vw, 30px); }
   .section-pad { padding-block: 80px; }
@@ -323,6 +338,25 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   .footer__links { flex-wrap: wrap; }
 }
 
+/* Narrowest phones: the globe goes, the language name stays - a word beats a
+   two-letter code, and the dropdown still reads as a control. */
+@media (max-width: 400px) {
+  .lang-select__globe { display: none; }
+  .lang-select { padding-left: 12px; }
+}
+
+/* 320px-class phones. Everything gives a little so the row still fits the
+   longest language name ("Albanese"/"Italisht") without the mark clipping. */
+@media (max-width: 360px) {
+  .header { padding-inline: 12px; column-gap: 8px; }
+  .brand { width: min(120px, 34vw); }
+  .lang-select { min-height: 40px; gap: 0; padding: 0 24px 0 9px; }
+  .lang-select select { min-height: 36px; font-size: 10px; letter-spacing: 0; }
+  .lang-select__chevron { right: 7px; width: 12px; }
+  .header__cta--mark { min-height: 40px; padding: 0 11px; }
+  .wolt-mark { font-size: 14px; }
+}
+
 @media (max-height: 560px) and (orientation: landscape) {
   .hero__title { font-size: clamp(34px, 6vw, 54px); }
   .hero__title strong { margin-top: 6px; font-size: clamp(17px, 3vw, 25px); }
@@ -333,11 +367,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
 
-/* Below 420px the header can only hold the logo and the language control, so
-   the order CTA drops out of it - the hero repeats it immediately underneath. */
-@media (max-width: 419px) {
-  .header__cta { display: none; }
-}
+
 
 /* Calling is the conversion here, so the two location actions sit side by side
    and wrap rather than shrink — the phone number must never truncate. */

@@ -53,7 +53,7 @@ function LanguageSelect({ lang, setLang, t }) {
       </svg>
       <select value={lang} onChange={(event) => setLang(event.target.value)} aria-label={t.languageLabel}>
         {LANGS.map((code) => (
-          <option key={code} value={code}>{LANG_NAMES[code]}</option>
+          <option key={code} value={code}>{LANG_NAMES[lang][code]}</option>
         ))}
       </select>
       <svg className="lang-select__chevron" viewBox="0 0 24 24" aria-hidden="true">
@@ -128,7 +128,16 @@ function App() {
         </a>
         <div className="header__actions">
           <LanguageSelect lang={lang} setLang={setLang} t={t} />
-          <a className="pill pill--blue header__cta" href={WOLT_URL} target="_blank" rel="noreferrer">{t.orderOnWolt}</a>
+          <a
+            className="pill header__cta header__cta--mark"
+            href={WOLT_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.orderOnWolt}
+            title={t.orderOnWolt}
+          >
+            <span className="wolt-mark" aria-hidden="true">wolt</span>
+          </a>
         </div>
       </header>
 

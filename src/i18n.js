@@ -5,9 +5,14 @@ const STORAGE_KEY = 'kater-lang'
 // Order here is the order the switcher renders them in.
 export const LANGS = ['sq', 'en', 'it']
 
-// Endonyms: a language is listed the way its own speakers write it, so the
-// options read the same whichever language the site is currently in.
-export const LANG_NAMES = { sq: 'Shqip', en: 'English', it: 'Italiano' }
+// Language names are translated rather than written as endonyms, so an
+// Albanian page carries no Italian words and vice versa. The globe icon and
+// the browser-language default are what help a visitor who reads neither.
+export const LANG_NAMES = {
+  sq: { sq: 'Shqip', en: 'Anglisht', it: 'Italisht' },
+  en: { sq: 'Albanian', en: 'English', it: 'Italian' },
+  it: { sq: 'Albanese', en: 'Inglese', it: 'Italiano' },
+}
 
 function detectDefaultLanguage() {
   if (typeof navigator === 'undefined') return 'en'
@@ -37,6 +42,11 @@ export function useLanguage() {
 
   useEffect(() => {
     document.documentElement.lang = lang
+    // The tab title and description are the one piece of copy that lives in
+    // index.html rather than in the tree, so they have to be set by hand.
+    document.title = ui[lang].meta.title
+    const description = document.querySelector('meta[name="description"]')
+    if (description) description.setAttribute('content', ui[lang].meta.description)
     try {
       window.localStorage.setItem(STORAGE_KEY, lang)
     } catch {
@@ -58,6 +68,10 @@ export const ui = {
     callDot: (phone) => `Call · ${phone}`,
     orCall: (phone) => `Or call ${phone}`,
     languageLabel: 'Language',
+    meta: {
+      title: 'Katër Burgers — Four burgers. One address.',
+      description: 'Four smash burgers, made fresh in Tirana. Bloom, Jalapeños, Oklahoma and Classic, smashed to order at Kryqëzimi 21 Dhjetori.',
+    },
     brandHome: 'Katër Burgers home',
     ariaIngredients: 'ingredients',
     burgerAlt: (name) => `${name} burger`,
@@ -132,6 +146,10 @@ export const ui = {
     callDot: (phone) => `Telefono · ${phone}`,
     orCall: (phone) => `Ose telefono ${phone}`,
     languageLabel: 'Gjuha',
+    meta: {
+      title: 'Katër Burgers — Katër burgera. Një adresë.',
+      description: 'Katër smash burgera, të bërë në moment në Tiranë. Bloom, Jalapeños, Oklahoma dhe Classic, te Kryqëzimi 21 Dhjetori.',
+    },
     brandHome: 'Katër Burgers — faqja kryesore',
     ariaIngredients: 'përbërësit',
     burgerAlt: (name) => `Burgeri ${name}`,
@@ -150,7 +168,7 @@ export const ui = {
       body: 'Asgjë e tepërt. Katër burgera të ndryshëm, që i bëjmë kur i porosit, pikërisht siç i lexon këtu.',
       badgeLine1: 'Bëhet',
       badgeLine2: 'në moment',
-      double: (n) => `dopio ${n} L`,
+      double: (n) => `i dyfishtë ${n} L`,
     },
     why: {
       eyebrow: 'Pse katër?',
@@ -206,6 +224,10 @@ export const ui = {
     callDot: (phone) => `Chiama · ${phone}`,
     orCall: (phone) => `Oppure chiama ${phone}`,
     languageLabel: 'Lingua',
+    meta: {
+      title: 'Katër Burgers — Quattro burger. Un indirizzo.',
+      description: 'Quattro smash burger, fatti al momento a Tirana. Bloom, Jalapeños, Oklahoma e Classic, al Kryqëzimi 21 Dhjetori.',
+    },
     brandHome: 'Katër Burgers — home',
     ariaIngredients: 'ingredienti',
     burgerAlt: (name) => `Burger ${name}`,

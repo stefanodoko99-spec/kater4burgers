@@ -5,6 +5,10 @@ const STORAGE_KEY = 'kater-lang'
 // Order here is the order the switcher renders them in.
 export const LANGS = ['sq', 'en', 'it']
 
+// Endonyms: a language is listed the way its own speakers write it, so the
+// options read the same whichever language the site is currently in.
+export const LANG_NAMES = { sq: 'Shqip', en: 'English', it: 'Italiano' }
+
 function detectDefaultLanguage() {
   if (typeof navigator === 'undefined') return 'en'
   const candidates = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]
@@ -53,8 +57,7 @@ export const ui = {
     call: (phone) => `Call ${phone}`,
     callDot: (phone) => `Call · ${phone}`,
     orCall: (phone) => `Or call ${phone}`,
-    openNav: 'Open menu',
-    closeNav: 'Close menu',
+    languageLabel: 'Language',
     brandHome: 'Katër Burgers home',
     ariaIngredients: 'ingredients',
     burgerAlt: (name) => `${name} burger`,
@@ -70,7 +73,7 @@ export const ui = {
       eyebrow: 'The whole menu',
       titleLine1: 'Four burgers.',
       titleStrong: 'Pick yours.',
-      body: 'Nothing on here is filler. Four different burgers, made when you order them, exactly as they are listed.',
+      body: 'Nothing here is filler. Four different burgers, made when you order them, exactly as they are listed.',
       badgeLine1: 'Made',
       badgeLine2: 'to order',
       double: (n) => `double ${n} L`,
@@ -78,7 +81,7 @@ export const ui = {
     why: {
       eyebrow: 'Why four?',
       titleLine1: 'A short menu.',
-      titleStrong: 'Done properly.',
+      titleStrong: 'Every burger done properly.',
       lead: 'A short menu means every ingredient has a job.',
       body: 'Bloom is the fresh one. Jalapeños is the hot one. Oklahoma is onions and a hard sear. Classic is the one that keeps everything in balance.',
       principles: [
@@ -102,7 +105,7 @@ export const ui = {
       titleLine1: '21 Dhjetori.',
       titleStrong: 'Tirana.',
       body: 'Pick your burger, eat in or take it with you.',
-      address: 'Rruga e Kavajës, Kryqëzimi 21 Dhjetori — beside Ushqimore Zuna, Tiranë 1001',
+      address: 'Rruga e Kavajës, Kryqëzimi 21 Dhjetori — next to Ushqimore Zuna, Tiranë 1001',
       open: 'Open',
       hours1: 'Sun – Thu · 12:00 – 01:00',
       hours2: 'Fri – Sat · 12:00 – 03:00',
@@ -129,8 +132,7 @@ export const ui = {
     call: (phone) => `Telefono ${phone}`,
     callDot: (phone) => `Telefono · ${phone}`,
     orCall: (phone) => `Ose telefono ${phone}`,
-    openNav: 'Hap menunë',
-    closeNav: 'Mbyll menunë',
+    languageLabel: 'Gjuha',
     brandHome: 'Katër Burgers — faqja kryesore',
     ariaIngredients: 'përbërësit',
     burgerAlt: (name) => `Burgeri ${name}`,
@@ -154,9 +156,9 @@ export const ui = {
     why: {
       eyebrow: 'Pse katër?',
       titleLine1: 'Menu e shkurtër.',
-      titleStrong: 'Punë e bërë si duhet.',
+      titleStrong: 'Bërë si duhet.',
       lead: 'Kur menuja është e shkurtër, çdo përbërës ka punën e vet.',
-      body: 'Bloom është i freskëti. Jalapeño është ai që djeg. Oklahoma është qepa dhe korja e skuqur. Classic është ai që i mban të gjitha në vend.',
+      body: 'Bloom është i freskëti. Jalapeño është ai që djeg. Oklahoma është qepa dhe korja e skuqur. Classic i balancon të gjitha.',
       principles: [
         { n: '01', title: 'Katër burgera', body: 'Zgjedhje e qartë, shije e veçantë' },
         { n: '02', title: 'Mish i freskët', body: 'Shtypet sa të dalë krokant' },
@@ -205,8 +207,7 @@ export const ui = {
     call: (phone) => `Chiama ${phone}`,
     callDot: (phone) => `Chiama · ${phone}`,
     orCall: (phone) => `Oppure chiama ${phone}`,
-    openNav: 'Apri il menu',
-    closeNav: 'Chiudi il menu',
+    languageLabel: 'Lingua',
     brandHome: 'Katër Burgers — home',
     ariaIngredients: 'ingredienti',
     burgerAlt: (name) => `Burger ${name}`,
@@ -222,7 +223,7 @@ export const ui = {
       eyebrow: 'Tutto il menu',
       titleLine1: 'Quattro burger.',
       titleStrong: 'Scegli il tuo.',
-      body: 'Niente riempitivi. Quattro burger diversi, fatti quando li ordini, esattamente come sono scritti qui.',
+      body: 'Niente riempitivi. Quattro burger diversi, fatti quando li ordini, esattamente come li leggi qui.',
       badgeLine1: 'Fatto',
       badgeLine2: 'al momento',
       double: (n) => `doppio ${n} L`,
@@ -232,7 +233,7 @@ export const ui = {
       titleLine1: 'Menu corto.',
       titleStrong: 'Fatto come si deve.',
       lead: 'Con un menu corto ogni ingrediente ha un compito.',
-      body: 'Bloom è quello fresco. Jalapeños è quello piccante. Oklahoma è cipolla e crosta ben rosolata. Classic è quello che tiene tutto in equilibrio.',
+      body: 'Bloom è quello fresco. Jalapeños è quello piccante. Oklahoma è cipolla dolce e crosta ben rosolata. Classic è quello che tiene tutto in equilibrio.',
       principles: [
         { n: '01', title: 'Quattro burger', body: 'Scelte chiare, gusti distinti' },
         { n: '02', title: 'Carne fresca', body: 'Schiacciata per bordi croccanti' },

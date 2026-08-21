@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { burgersBase, burgerText } from './content.js'
-import { LANGS, ui, useLanguage } from './i18n.js'
+import { LANG_NAMES, LANGS, ui, useLanguage } from './i18n.js'
 import { ratingSummary, reviews } from './reviews.js'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -41,28 +41,30 @@ function Stars({ rating, label }) {
   )
 }
 
-function LanguageSwitch({ lang, setLang, t, className = '' }) {
+// A native <select> rather than a custom listbox: it is one tap on mobile,
+// where this control now sits in place of the old nav button, and it comes
+// with keyboard support and the platform's own picker for free.
+function LanguageSelect({ lang, setLang, t }) {
   return (
-    <div className={`lang-switch ${className}`} role="group" aria-label="Language">
-      {LANGS.map((code) => (
-        <button
-          key={code}
-          type="button"
-          className={lang === code ? 'is-active' : ''}
-          aria-pressed={lang === code}
-          aria-label={t.switchTo[code]}
-          onClick={() => setLang(code)}
-        >
-          {code.toUpperCase()}
-        </button>
-      ))}
+    <div className="lang-select">
+      <svg className="lang-select__globe" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3.5 9h17M3.5 15h17M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" />
+      </svg>
+      <select value={lang} onChange={(event) => setLang(event.target.value)} aria-label={t.languageLabel}>
+        {LANGS.map((code) => (
+          <option key={code} value={code}>{LANG_NAMES[code]}</option>
+        ))}
+      </select>
+      <svg className="lang-select__chevron" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
     </div>
   )
 }
 
 function App() {
   const appRef = useRef(null)
-  const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useLanguage()
 
   const t = ui[lang]
@@ -101,15 +103,9 @@ function App() {
 
       return () => mm.revert()
     },
-    { scope: appRef, dependencies: [lang] },
+    { scope: appRef },
   )
 
-  useEffect(() => {
-    document.body.classList.toggle('menu-is-open', menuOpen)
-    return () => document.body.classList.remove('menu-is-open')
-  }, [menuOpen])
-
-  const closeMenu = () => setMenuOpen(false)
 
   return (
     <div ref={appRef} className="site-shell">
@@ -130,34 +126,11 @@ function App() {
         <a className="brand" href="#story" aria-label={t.brandHome}>
           <img src="/images/logo-kater.png" alt="Katër Burgers" width="1200" height="282" />
         </a>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#menu">{t.nav.menu}</a>
-          <a href="#why-four">{t.nav.why}</a>
-          <a href="#visit">{t.nav.visit}</a>
-        </nav>
         <div className="header__actions">
-          <LanguageSwitch lang={lang} setLang={setLang} t={t} className="lang-switch--desktop" />
+          <LanguageSelect lang={lang} setLang={setLang} t={t} />
           <a className="pill pill--blue header__cta" href={WOLT_URL} target="_blank" rel="noreferrer">{t.orderOnWolt}</a>
         </div>
-        <button
-          className="menu-toggle"
-          type="button"
-          aria-label={menuOpen ? t.closeNav : t.openNav}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span /><span />
-        </button>
       </header>
-
-      <div className={`mobile-menu ${menuOpen ? 'is-open' : ''}`} aria-hidden={!menuOpen}>
-        <a href="#menu" onClick={closeMenu}>{t.nav.menu}</a>
-        <a href="#why-four" onClick={closeMenu}>{t.nav.why}</a>
-        <a href="#visit" onClick={closeMenu}>{t.nav.visit}</a>
-        <LanguageSwitch lang={lang} setLang={setLang} t={t} className="lang-switch--mobile" />
-        <a className="pill pill--blue mobile-menu__cta" href={WOLT_URL} target="_blank" rel="noreferrer" onClick={closeMenu}>{t.orderOnWolt}</a>
-        <a className="pill mobile-menu__cta" href={`tel:${PHONE_E164}`} onClick={closeMenu}>{t.call(PHONE_DISPLAY)}</a>
-      </div>
 
       <main>
         <section id="story" className="hero">

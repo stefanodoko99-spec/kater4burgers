@@ -18,7 +18,6 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--white); }
 body { min-width: 0; margin: 0; overflow-x: hidden; background: var(--white); }
-body.menu-is-open { overflow: hidden; }
 a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 button { font: inherit; }
@@ -46,42 +45,42 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 
 .header {
   position: fixed; z-index: 60; top: 28px; right: 0; left: 0; height: var(--header-h);
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 var(--pad);
+  display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 var(--pad);
   border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .96);
   backdrop-filter: blur(12px);
 }
 .brand { width: clamp(185px, 16vw, 245px); min-height: 50px; display: flex; align-items: center; }
 .brand img { width: 100%; height: auto; object-fit: contain; }
-.desktop-nav { display: flex; gap: 32px; font-size: 14px; font-weight: 750; }
-.desktop-nav a, .footer__links a { position: relative; }
-.desktop-nav a::after, .footer__links a::after {
+.footer__links a { position: relative; }
+.footer__links a::after {
   content: ""; position: absolute; right: 0; bottom: -6px; left: 0; height: 2px;
   background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 220ms ease;
 }
-.desktop-nav a:hover::after, .desktop-nav a:focus-visible::after,
 .footer__links a:hover::after, .footer__links a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 .header__actions { justify-self: end; display: flex; align-items: center; gap: 14px; }
-.menu-toggle { display: none; }
 
-.lang-switch {
-  display: inline-flex; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden;
-  box-shadow: 3px 3px 0 var(--ink);
+/* Sits where the nav toggle used to, at every width - it is the only header
+   control besides the order CTA, so it has to read as a control on its own. */
+.lang-select {
+  position: relative; display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px; padding: 0 32px 0 13px; border: 2px solid var(--ink); border-radius: 999px;
+  background: white; box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
-.lang-switch button {
-  min-width: 40px; min-height: 36px; padding: 0 12px; border: 0; background: transparent;
-  color: var(--ink); font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .04em;
-  cursor: pointer; transition: background-color 180ms ease, color 180ms ease;
+.lang-select:hover, .lang-select:focus-within { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.lang-select select {
+  appearance: none; -webkit-appearance: none; min-height: 40px; padding: 0; border: 0;
+  background: transparent; color: var(--ink); font: inherit; font-size: 12px; font-weight: 800;
+  letter-spacing: .03em; cursor: pointer;
 }
-.lang-switch button + button { border-left: 2px solid var(--ink); }
-.lang-switch button.is-active { background: var(--blue); color: var(--white); }
-.lang-switch button:hover:not(.is-active) { background: var(--paper); }
-.lang-switch--mobile {
-  box-shadow: none; border-color: rgba(255, 255, 255, .5); align-self: flex-start; margin-top: 4px;
+.lang-select select:focus { outline: none; }
+.lang-select:focus-within { outline: 3px solid var(--blue); outline-offset: 4px; }
+.lang-select__globe, .lang-select__chevron {
+  flex: none; fill: none; stroke: var(--ink); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
 }
-.lang-switch--mobile button { min-height: 40px; color: var(--white); }
-.lang-switch--mobile button + button { border-left-color: rgba(255, 255, 255, .5); }
-.lang-switch--mobile button.is-active { background: var(--white); color: var(--blue); }
-.lang-switch--mobile button:hover:not(.is-active) { background: rgba(255, 255, 255, .12); }
+.lang-select__globe { width: 16px; height: 16px; }
+.lang-select__chevron { position: absolute; right: 11px; width: 14px; height: 14px; }
 
 .pill {
   min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -95,15 +94,6 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 .pill--cream { color: var(--ink); background: white; }
 .pill svg { width: 18px; height: 18px; }
 .text-link { min-height: 44px; display: inline-flex; align-items: center; border-bottom: 2px solid currentColor; font-weight: 800; }
-
-.mobile-menu {
-  position: fixed; z-index: 55; inset: 106px 0 0; display: flex; flex-direction: column; gap: 18px;
-  padding: 46px var(--pad); color: white; background: var(--blue); visibility: hidden;
-  pointer-events: none; transform: translateY(calc(-100% - 110px));
-  transition: transform 420ms cubic-bezier(.76, 0, .24, 1), visibility 0s linear 420ms;
-}
-.mobile-menu.is-open { visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
-.mobile-menu a { font-size: clamp(42px, 12vw, 72px); font-weight: 900; letter-spacing: -.06em; }
 
 /* Hero. This replaced a 720vh sticky-pinned "scroll story" that drove four 3D
    burger stages from a requestAnimationFrame loop. That version overlapped the
@@ -282,7 +272,6 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
 
 @media (max-width: 980px) {
-  .desktop-nav { gap: 20px; }
   .brand-story { grid-template-columns: .65fr 1.35fr; }
   .brand-story__principles { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
   .brand-story__principles div:nth-child(3) { border-bottom: 1px solid rgba(255, 255, 255, .45); }
@@ -290,19 +279,12 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 
 @media (max-width: 760px) {
   :root { --header-h: 72px; }
-  .header { top: 28px; grid-template-columns: 1fr auto auto; column-gap: 10px; }
+  .header { top: 28px; grid-template-columns: 1fr auto; column-gap: 10px; }
   .hero { grid-template-columns: 1fr; }
   .hero__card { order: -1; }
-  .desktop-nav { display: none; }
   .header__actions { gap: 8px; }
-  .lang-switch--desktop { display: none; }
   .header__cta { min-height: 44px; padding: 0 15px; font-size: 11px; box-shadow: 3px 3px 0 var(--ink); }
   .brand { width: min(168px, 38vw); }
-  .menu-toggle { width: 48px; height: 48px; display: grid; place-content: center; gap: 7px; border: 0; border-radius: 50%; background: var(--blue); cursor: pointer; }
-  .menu-toggle span { width: 21px; height: 2px; background: white; transition: transform 220ms ease; }
-  .menu-is-open .menu-toggle span:first-child { transform: translateY(4.5px) rotate(45deg); }
-  .menu-is-open .menu-toggle span:last-child { transform: translateY(-4.5px) rotate(-45deg); }
-  .mobile-menu { inset-block-start: 100px; }
 
   .hero__title { font-size: clamp(42px, 13vw, 70px); line-height: .82; }
   .hero__title strong { max-width: 310px; margin-top: 9px; font-size: clamp(23px, 6.8vw, 34px); }
@@ -352,20 +334,10 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
 
-/* The order CTA must survive on small screens. Down to 420px it stays in the
-   header next to the toggle; below that the header can only hold the logo and
-   the toggle, so the CTA moves into the menu panel rather than vanishing. */
-.mobile-menu .mobile-menu__cta {
-  align-self: start; margin-top: 10px; font-size: 13px; font-weight: 850; letter-spacing: 0;
-}
-
-@media (min-width: 761px) {
-  .mobile-menu__cta { display: none; }
-}
-
+/* Below 420px the header can only hold the logo and the language control, so
+   the order CTA drops out of it - the hero repeats it immediately underneath. */
 @media (max-width: 419px) {
-  .header { grid-template-columns: 1fr auto; }
-  .header__actions { display: none; }
+  .header__cta { display: none; }
 }
 
 /* Calling is the conversion here, so the two location actions sit side by side

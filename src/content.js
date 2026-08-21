@@ -22,7 +22,7 @@ export const burgerText = {
     },
     jalapenos: {
       name: 'Jalapeños',
-      headline: 'Hot, but creamy with it.',
+      headline: 'Hot, but not harsh.',
       copy: 'Jalapeños bring the heat, the herb cream sauce takes the edge off, and underneath there is American cheese and smashed beef.',
       ingredients: ['Brioche bun', 'Jalapeños', 'Herb cream sauce', 'American cheese', 'Smashed beef'],
     },
@@ -35,7 +35,7 @@ export const burgerText = {
     classic: {
       name: 'Classic',
       headline: 'Everything a smash needs.',
-      copy: 'Pickles, American cheddar, smashed beef and house sauce. Straightforward, and balanced.',
+      copy: 'Pickles, American cheddar, smashed beef and house sauce. Straightforward and balanced.',
       ingredients: ['Brioche bun', 'Pickles', 'American cheddar', 'Smashed beef', 'House sauce'],
     },
   },
@@ -48,7 +48,7 @@ export const burgerText = {
     },
     jalapenos: {
       name: 'Jalapeños',
-      headline: 'Djeg, po me krem.',
+      headline: 'Djeg, por me krem.',
       copy: 'Jalapeño djeg sa duhet, salca kremoze me erëza e zbut, dhe poshtë ka djathë amerikan me mish të shtypur.',
       ingredients: ['Bukë brioche', 'Jalapeño', 'Salcë kremoze me erëza', 'Djathë amerikan', 'Mish i shtypur'],
     },
@@ -61,7 +61,7 @@ export const burgerText = {
     classic: {
       name: 'Classic',
       headline: 'Gjithçka që i duhet një smash-i.',
-      copy: 'Turshi, cheddar amerikan, mish i shtypur dhe salca e shtëpisë. E thjeshtë dhe në vend.',
+      copy: 'Turshi, cheddar amerikan, mish i shtypur dhe salca e shtëpisë. E thjeshtë dhe e balancuar.',
       ingredients: ['Bukë brioche', 'Turshi', 'Cheddar amerikan', 'Mish i shtypur', 'Salcë shtëpie'],
     },
   },

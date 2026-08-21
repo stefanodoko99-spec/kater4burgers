@@ -83,7 +83,7 @@ export const ui = {
       titleLine1: 'A short menu.',
       titleStrong: 'Every burger done properly.',
       lead: 'A short menu means every ingredient has a job.',
-      body: 'Bloom is the fresh one. Jalapeños is the hot one. Oklahoma is onions and a hard sear. Classic is the one that keeps everything in balance.',
+      body: 'Bloom is the freshest of the four, with tomato and lettuce. Jalapeños is the one that brings the heat. Oklahoma is caramelised onions over beef and cheddar, with no sauce at all. Classic is the familiar one, with pickles and house sauce.',
       principles: [
         { n: '01', title: 'Four burgers', body: 'Clear choices, distinct flavours' },
         { n: '02', title: 'Fresh beef', body: 'Smashed for crisp edges' },
@@ -158,7 +158,7 @@ export const ui = {
       titleLine1: 'Menu e shkurtër.',
       titleStrong: 'Bërë si duhet.',
       lead: 'Kur menuja është e shkurtër, çdo përbërës ka punën e vet.',
-      body: 'Bloom është i freskëti. Jalapeño është ai që djeg. Oklahoma është qepa dhe korja e skuqur. Classic i balancon të gjitha.',
+      body: 'Bloom është më i freskëti nga të katërt, me domate dhe marule. Jalapeño është ai që djeg. Oklahoma ka qepë të karamelizuara mbi mish dhe cheddar, pa asnjë salcë. Classic është klasiku, me turshi dhe salcë shtëpie.',
       principles: [
         { n: '01', title: 'Katër burgera', body: 'Zgjedhje e qartë, shije e veçantë' },
         { n: '02', title: 'Mish i freskët', body: 'Shtypet sa të dalë krokant' },
@@ -233,7 +233,7 @@ export const ui = {
       titleLine1: 'Menu corto.',
       titleStrong: 'Fatto come si deve.',
       lead: 'Con un menu corto ogni ingrediente ha un compito.',
-      body: 'Bloom è quello fresco. Jalapeños è quello piccante. Oklahoma è cipolla dolce e crosta ben rosolata. Classic è quello che tiene tutto in equilibrio.',
+      body: 'Bloom è il più fresco dei quattro, con pomodoro e lattuga. Jalapeños è quello piccante. Oklahoma ha cipolle caramellate su carne e cheddar, senza nessuna salsa. Classic è quello classico, con cetriolini e salsa della casa.',
       principles: [
         { n: '01', title: 'Quattro burger', body: 'Scelte chiare, gusti distinti' },
         { n: '02', title: 'Carne fresca', body: 'Schiacciata per bordi croccanti' },

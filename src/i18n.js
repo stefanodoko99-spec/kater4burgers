@@ -2,10 +2,19 @@ import { useEffect, useState } from 'react'
 
 const STORAGE_KEY = 'kater-lang'
 
+// Order here is the order the switcher renders them in.
+export const LANGS = ['sq', 'en', 'it']
+
 function detectDefaultLanguage() {
   if (typeof navigator === 'undefined') return 'en'
   const candidates = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]
-  return candidates.some((code) => (code || '').toLowerCase().startsWith('sq')) ? 'sq' : 'en'
+  for (const candidate of candidates) {
+    const code = (candidate || '').toLowerCase()
+    if (code.startsWith('sq')) return 'sq'
+    if (code.startsWith('it')) return 'it'
+    if (code.startsWith('en')) return 'en'
+  }
+  return 'en'
 }
 
 // Persisted across visits, otherwise inferred from the browser's language
@@ -15,7 +24,7 @@ export function useLanguage() {
   const [lang, setLang] = useState(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY)
-      if (saved === 'en' || saved === 'sq') return saved
+      if (LANGS.includes(saved)) return saved
     } catch {
       // localStorage can throw in private-browsing contexts; fall through.
     }
@@ -36,47 +45,47 @@ export function useLanguage() {
 
 export const ui = {
   en: {
-    skipLink: 'Skip to the four burgers',
-    ticker: ['Four burgers', 'Smashed to order', '21 Dhjetori · Tirana'],
+    skipLink: 'Skip to the burgers',
+    ticker: ['Four burgers', 'Made when you order', '21 Dhjetori · Tirana'],
     tickerAria: 'Katër Burgers highlights',
-    nav: { menu: 'Four burgers', why: 'Why four', visit: 'Tirana' },
+    nav: { menu: 'The burgers', why: 'Why four', visit: 'Find us' },
     orderOnWolt: 'Order on Wolt',
     call: (phone) => `Call ${phone}`,
     callDot: (phone) => `Call · ${phone}`,
     orCall: (phone) => `Or call ${phone}`,
-    openNav: 'Open navigation',
-    closeNav: 'Close navigation',
+    openNav: 'Open menu',
+    closeNav: 'Close menu',
     brandHome: 'Katër Burgers home',
     ariaIngredients: 'ingredients',
     burgerAlt: (name) => `${name} burger`,
-    switchTo: { en: 'Switch to English', sq: 'Switch to Albanian' },
+    switchTo: { en: 'Switch to English', sq: 'Switch to Albanian', it: 'Switch to Italian' },
     hero: {
-      eyebrow: 'Smash burgers · Tiranë',
+      eyebrow: 'Smash burgers · Tirana',
       titleLine1: 'Four burgers.',
-      titleStrong: 'Smashed to order, done properly.',
-      lead: 'Fresh beef, never frozen, pressed hard on the flat top for crisp, lacy edges. Four burgers — that is the whole menu.',
+      titleStrong: 'Smashed to order.',
+      lead: 'Fresh beef, never frozen, pressed hard on the griddle so the edges go crisp. Four burgers — that is the whole menu.',
       priceLabel: 'Each',
     },
     menu: {
-      eyebrow: 'The complete menu',
+      eyebrow: 'The whole menu',
       titleLine1: 'Four burgers.',
-      titleStrong: 'Pick your stack.',
-      body: 'Nothing on the menu is filler. Four distinct burgers, smashed to order and finished exactly as listed.',
-      badgeLine1: 'Smashed',
+      titleStrong: 'Pick yours.',
+      body: 'Nothing on here is filler. Four different burgers, made when you order them, exactly as they are listed.',
+      badgeLine1: 'Made',
       badgeLine2: 'to order',
       double: (n) => `double ${n} L`,
     },
     why: {
       eyebrow: 'Why four?',
       titleLine1: 'A short menu.',
-      titleStrong: 'A serious smash.',
+      titleStrong: 'Done properly.',
       lead: 'A short menu means every ingredient has a job.',
-      body: 'Bloom brings the freshness. Jalapeños brings the heat. Oklahoma brings the onions and the sear. Classic keeps everything in balance.',
+      body: 'Bloom is the fresh one. Jalapeños is the hot one. Oklahoma is onions and a hard sear. Classic is the one that keeps everything in balance.',
       principles: [
         { n: '01', title: 'Four burgers', body: 'Clear choices, distinct flavours' },
         { n: '02', title: 'Fresh beef', body: 'Smashed for crisp edges' },
-        { n: '03', title: 'Real layers', body: 'Every ingredient earns its place' },
-        { n: '04', title: 'Made to order', body: 'Assembled after you order' },
+        { n: '03', title: 'Real layers', body: 'Every ingredient does something' },
+        { n: '04', title: 'Made to order', body: 'We start once you order' },
       ],
     },
     reviews: {
@@ -89,7 +98,7 @@ export const ui = {
       googleReview: 'Google review',
     },
     visit: {
-      eyebrow: 'Where to get the four',
+      eyebrow: 'Where to find us',
       titleLine1: '21 Dhjetori.',
       titleStrong: 'Tirana.',
       body: 'Pick your burger, eat in or take it with you.',
@@ -98,11 +107,11 @@ export const ui = {
       hours1: 'Sun – Thu · 12:00 – 01:00',
       hours2: 'Fri – Sat · 12:00 – 03:00',
       service: 'Service',
-      serviceValue: 'Dine in & takeaway',
-      directions: 'Get directions',
+      serviceValue: 'Eat in and takeaway',
+      directions: 'See on the map',
     },
     closing: {
-      eyebrow: 'You know the four',
+      eyebrow: 'Now you know all four',
       titleLine1: 'Which one',
       titleStrong: 'are you ordering?',
     },
@@ -112,10 +121,10 @@ export const ui = {
     },
   },
   sq: {
-    skipLink: 'Kalo te katër burgerët',
-    ticker: ['Katër burgerë', 'Të shtypur sipas porosisë', '21 Dhjetori · Tiranë'],
+    skipLink: 'Kalo te burgerat',
+    ticker: ['Katër burgera', 'Bëhen në moment', '21 Dhjetori · Tiranë'],
     tickerAria: 'Katër Burgers — pikat kryesore',
-    nav: { menu: 'Burgerët', why: 'Pse katër', visit: 'Na gjeni' },
+    nav: { menu: 'Burgerat', why: 'Pse katër', visit: 'Na gjeni' },
     orderOnWolt: 'Porosit në Wolt',
     call: (phone) => `Telefono ${phone}`,
     callDot: (phone) => `Telefono · ${phone}`,
@@ -125,34 +134,34 @@ export const ui = {
     brandHome: 'Katër Burgers — faqja kryesore',
     ariaIngredients: 'përbërësit',
     burgerAlt: (name) => `Burgeri ${name}`,
-    switchTo: { en: 'Kalo në anglisht', sq: 'Kalo në shqip' },
+    switchTo: { en: 'Kalo në anglisht', sq: 'Kalo në shqip', it: 'Kalo në italisht' },
     hero: {
       eyebrow: 'Smash burger · Tiranë',
-      titleLine1: 'Katër burgerë.',
-      titleStrong: 'Të shtypur sipas porosisë, si duhet.',
-      lead: 'Mish viçi i freskët, kurrë i ngrirë, i shtypur fort në rrasë të nxehtë për buzë krokante. Katër burgerë — kjo është e gjithë menuja.',
-      priceLabel: 'Për copë',
+      titleLine1: 'Katër burgera.',
+      titleStrong: 'Bëhen në moment.',
+      lead: 'Mish viçi i freskët, kurrë i ngrirë. E shtypim fort sa të dalë krokant në buzë. Katër burgera — kaq ka menuja.',
+      priceLabel: 'Copa',
     },
     menu: {
-      eyebrow: 'Menuja e plotë',
-      titleLine1: 'Katër burgerë.',
-      titleStrong: 'Zgjidh burgerin tënd.',
-      body: 'Asgjë e tepërt. Katër burgerë të veçantë, të shtypur sipas porosisë dhe të përgatitur pikërisht si në përshkrim.',
-      badgeLine1: 'Të shtypur',
-      badgeLine2: 'sipas porosisë',
-      double: (n) => `Dopio ${n} L`,
+      eyebrow: 'E gjithë menuja',
+      titleLine1: 'Katër burgera.',
+      titleStrong: 'Zgjidh të tëndin.',
+      body: 'Asgjë e tepërt. Katër burgera të ndryshëm, që i bëjmë kur i porosit, pikërisht siç i lexon këtu.',
+      badgeLine1: 'Bëhet',
+      badgeLine2: 'në moment',
+      double: (n) => `dopio ${n} L`,
     },
     why: {
       eyebrow: 'Pse katër?',
       titleLine1: 'Menu e shkurtër.',
-      titleStrong: 'Një smash serioz.',
-      lead: 'Një menu e shkurtër do të thotë që çdo përbërës ka një rol të qartë.',
-      body: 'Bloom sjell freskinë. Jalapeños sjell pikantërinë. Oklahoma sjell qepët dhe skuqjen. Classic i mban të gjitha në balancë.',
+      titleStrong: 'Punë e bërë si duhet.',
+      lead: 'Kur menuja është e shkurtër, çdo përbërës ka punën e vet.',
+      body: 'Bloom është i freskëti. Jalapeño është ai që djeg. Oklahoma është qepa dhe korja e skuqur. Classic është ai që i mban të gjitha në vend.',
       principles: [
-        { n: '01', title: 'Katër burgerë', body: 'Zgjedhje e qartë, shije e veçantë' },
-        { n: '02', title: 'Mish i freskët', body: 'I shtypur për buzë krokante' },
-        { n: '03', title: 'Shtresa të vërteta', body: 'Çdo përbërës e ka vendin e vet' },
-        { n: '04', title: 'Bëhet sipas porosisë', body: 'Nis të përgatitet kur ti zgjedh' },
+        { n: '01', title: 'Katër burgera', body: 'Zgjedhje e qartë, shije e veçantë' },
+        { n: '02', title: 'Mish i freskët', body: 'Shtypet sa të dalë krokant' },
+        { n: '03', title: 'Shtresa të vërteta', body: 'Çdo përbërës bën punën e vet' },
+        { n: '04', title: 'Bëhet me porosi', body: 'Nisim pasi ti zgjedh' },
       ],
     },
     reviews: {
@@ -165,10 +174,10 @@ export const ui = {
       googleReview: 'Vlerësim në Google',
     },
     visit: {
-      eyebrow: 'Ku i gjen të katërt',
+      eyebrow: 'Ku na gjen',
       titleLine1: '21 Dhjetori.',
       titleStrong: 'Tiranë.',
-      body: 'Zgjidh burgerin tënd, ha në lokal ose merre me vete.',
+      body: 'Zgjidh burgerin, ha këtu ose merre me vete.',
       address: 'Rruga e Kavajës, Kryqëzimi 21 Dhjetori — pranë Ushqimore Zuna, Tiranë 1001',
       open: 'Hapur',
       hours1: 'Die – Enj · 12:00 – 01:00',
@@ -183,8 +192,84 @@ export const ui = {
       titleStrong: 'po porosit?',
     },
     footer: {
-      tagline: 'Katër burgerë. Një adresë. Tiranë.',
+      tagline: 'Katër burgera. Një adresë. Tiranë.',
       legal: '© 2026 Katër Burgers. Të gjitha të drejtat e rezervuara.',
+    },
+  },
+  it: {
+    skipLink: 'Vai ai burger',
+    ticker: ['Quattro burger', 'Fatti al momento', '21 Dhjetori · Tirana'],
+    tickerAria: 'Katër Burgers — in evidenza',
+    nav: { menu: 'I burger', why: 'Perché quattro', visit: 'Dove siamo' },
+    orderOnWolt: 'Ordina su Wolt',
+    call: (phone) => `Chiama ${phone}`,
+    callDot: (phone) => `Chiama · ${phone}`,
+    orCall: (phone) => `Oppure chiama ${phone}`,
+    openNav: 'Apri il menu',
+    closeNav: 'Chiudi il menu',
+    brandHome: 'Katër Burgers — home',
+    ariaIngredients: 'ingredienti',
+    burgerAlt: (name) => `Burger ${name}`,
+    switchTo: { en: "Passa all'inglese", sq: "Passa all'albanese", it: "Passa all'italiano" },
+    hero: {
+      eyebrow: 'Smash burger · Tirana',
+      titleLine1: 'Quattro burger.',
+      titleStrong: 'Schiacciati al momento.',
+      lead: 'Carne di manzo fresca, mai congelata, schiacciata forte sulla piastra perché i bordi vengano croccanti. Quattro burger: il menu è tutto qui.',
+      priceLabel: 'Cad.',
+    },
+    menu: {
+      eyebrow: 'Tutto il menu',
+      titleLine1: 'Quattro burger.',
+      titleStrong: 'Scegli il tuo.',
+      body: 'Niente riempitivi. Quattro burger diversi, fatti quando li ordini, esattamente come sono scritti qui.',
+      badgeLine1: 'Fatto',
+      badgeLine2: 'al momento',
+      double: (n) => `doppio ${n} L`,
+    },
+    why: {
+      eyebrow: 'Perché quattro?',
+      titleLine1: 'Menu corto.',
+      titleStrong: 'Fatto come si deve.',
+      lead: 'Con un menu corto ogni ingrediente ha un compito.',
+      body: 'Bloom è quello fresco. Jalapeños è quello piccante. Oklahoma è cipolla e crosta ben rosolata. Classic è quello che tiene tutto in equilibrio.',
+      principles: [
+        { n: '01', title: 'Quattro burger', body: 'Scelte chiare, gusti distinti' },
+        { n: '02', title: 'Carne fresca', body: 'Schiacciata per bordi croccanti' },
+        { n: '03', title: 'Strati veri', body: 'Ogni ingrediente fa qualcosa' },
+        { n: '04', title: 'Fatto al momento', body: 'Si parte quando ordini' },
+      ],
+    },
+    reviews: {
+      eyebrow: 'Su Google',
+      titleLine1: 'Cinque stelle.',
+      titleStrong: 'Ogni volta.',
+      ratingOf: (value) => `${value} su 5`,
+      countLabel: (count) => `${count} recensioni su Google`,
+      seeAll: 'Vedi tutte le recensioni su Google',
+      googleReview: 'Recensione Google',
+    },
+    visit: {
+      eyebrow: 'Dove trovarci',
+      titleLine1: '21 Dhjetori.',
+      titleStrong: 'Tirana.',
+      body: 'Scegli il tuo burger, mangia qui o portalo via.',
+      address: 'Rruga e Kavajës, Kryqëzimi 21 Dhjetori — accanto a Ushqimore Zuna, Tiranë 1001',
+      open: 'Aperto',
+      hours1: 'Dom – Gio · 12:00 – 01:00',
+      hours2: 'Ven – Sab · 12:00 – 03:00',
+      service: 'Servizio',
+      serviceValue: 'Sul posto e da asporto',
+      directions: 'Vedi sulla mappa',
+    },
+    closing: {
+      eyebrow: 'Ora li conosci tutti e quattro',
+      titleLine1: 'Quale',
+      titleStrong: 'ordini?',
+    },
+    footer: {
+      tagline: 'Quattro burger. Un indirizzo. Tirana.',
+      legal: '© 2026 Katër Burgers. Tutti i diritti riservati.',
     },
   },
 }

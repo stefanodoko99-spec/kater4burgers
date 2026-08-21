@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { burgersBase, burgerText } from './content.js'
-import { ui, useLanguage } from './i18n.js'
+import { LANGS, ui, useLanguage } from './i18n.js'
 import { ratingSummary, reviews } from './reviews.js'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -44,7 +44,7 @@ function Stars({ rating, label }) {
 function LanguageSwitch({ lang, setLang, t, className = '' }) {
   return (
     <div className={`lang-switch ${className}`} role="group" aria-label="Language">
-      {['en', 'sq'].map((code) => (
+      {LANGS.map((code) => (
         <button
           key={code}
           type="button"

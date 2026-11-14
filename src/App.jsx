@@ -13,6 +13,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP)
 const PHONE_DISPLAY = '069 342 2433'
 const PHONE_E164 = '+355693422433'
 const WOLT_URL = 'https://wolt.com/en/alb/tirana/restaurant/kater-burgers'
+// Studio credit in the footer. Followed on purpose: the client agreed to it.
+// When the studio moves to oddformstudio.al this address redirects there.
+const STUDIO_URL = 'https://odd-form-studio.stefanodoko-radari.workers.dev/'
 
 // Every burger is the same price single; the double adds 200.
 const PRICE_SINGLE = 700
@@ -298,7 +301,10 @@ function App() {
         <img src="/images/logo-kater.png" alt="Katër Burgers" width="1200" height="282" />
         <p>{t.footer.tagline}</p>
         <div className="footer__links"><a href="#menu">{t.nav.menu}</a><a href="#why-four">{t.nav.why}</a><a href="#visit">{t.nav.visit}</a></div>
-        <p className="footer__legal">{t.footer.legal}</p>
+        <p className="footer__legal">
+          <span>{t.footer.legal}</span>
+          <a className="footer__credit" href={STUDIO_URL} target="_blank" rel="noopener">{t.footer.credit}</a>
+        </p>
       </footer>
     </div>
   )

@@ -134,6 +134,7 @@ export const ui = {
     footer: {
       tagline: 'Four burgers. One address. Tirana.',
       legal: '© 2026 Katër Burgers. All rights reserved.',
+      credit: 'Website by ODD FORM STUDIO',
     },
   },
   sq: {
@@ -212,6 +213,7 @@ export const ui = {
     footer: {
       tagline: 'Katër burgera. Një adresë. Tiranë.',
       legal: '© 2026 Katër Burgers. Të gjitha të drejtat e rezervuara.',
+      credit: 'Faqja nga ODD FORM STUDIO',
     },
   },
   it: {
@@ -290,6 +292,7 @@ export const ui = {
     footer: {
       tagline: 'Quattro burger. Un indirizzo. Tirana.',
       legal: '© 2026 Katër Burgers. Tutti i diritti riservati.',
+      credit: 'Sito di ODD FORM STUDIO',
     },
   },
 }

@@ -274,7 +274,8 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
 .footer img { width: 185px; height: auto; }
 .footer > p { margin: 0; font-size: 13px; font-weight: 700; }
 .footer__links { display: flex; gap: 26px; font-size: 13px; font-weight: 800; }
-.footer__legal { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--line); color: rgba(7, 24, 79, .62); }
+.footer__legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 20px; border-top: 1px solid var(--line); color: rgba(7, 24, 79, .62); }
+.footer__credit:hover, .footer__credit:focus-visible { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
 
